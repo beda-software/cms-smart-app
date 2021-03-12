@@ -1,5 +1,5 @@
 import React from "react";
-import { useSmartCreate, useSmartDelete, useSmartSearch } from "../react-smart";
+import { useSmartCreate, useSmartDelete, useSmartSearch, useSmartUser } from "../react-smart";
 
 export interface IPatient {
   id: string;
@@ -7,14 +7,23 @@ export interface IPatient {
   name?: { given?: string[]; family?: string }[];
 }
 
+export interface INewPatient {
+  birthDate?: string;
+  name?: string;
+}
+
 const PatientsPage = () => {
   const [selectedPatient, setSelectedPatient] = React.useState<IPatient | null>(null);
-  const { data: patients, loading: patientsLoading, refetch: refetchPatients } = useSmartSearch<IPatient>(
-    "Patient"
-  );
+  const [newPatient, setNewPatient] = React.useState<INewPatient>({});
+  const smartUser = useSmartUser();
 
+  // Queries
+  const { data: patients, loading: patientsLoading, refetch: refetchPatients } = useSmartSearch<IPatient>("Patient");
+
+  // Mutations
   const [addPatient, { loading: addPatientLoading }] = useSmartCreate<IPatient>("Patient");
   const [removePatient, { loading: removePatientLoading }] = useSmartDelete("Patient");
+  const [logOut, { loading: logOutLoading }] = useSmartDelete("Session");
 
   if (patientsLoading && !patients) {
     return <div className="ui loader active text">Loading...</div>;
@@ -23,33 +32,45 @@ const PatientsPage = () => {
   if (!patients) {
     return null;
   }
-
   const onRemovePatientClick = (patientId: string) => {
     removePatient(patientId).then(refetchPatients);
   };
 
-  const onAddPatientClick = () => {
-    const name = window.prompt("Patient name");
-    if (!name) {
-      return;
-    }
+  const onAddPatientSubmit: React.FormEventHandler = (e) => {
+    e.preventDefault();
     addPatient({
-      name: [{ given: [name] }],
-      birthDate: "2021-01-01",
-    }).then(refetchPatients);
+      name: [{ given: [newPatient.name] }],
+      birthDate: newPatient.birthDate,
+    }).then(() => {
+      setNewPatient({});
+      setSelectedPatient(null);
+      refetchPatients();
+    });
+  };
+
+  const onLogOutClick = () => {
+    logOut().then(() => {
+      sessionStorage.clear();
+      window.location.href = "/";
+    });
   };
 
   return (
     <div className="ui container" style={{ paddingTop: 50 }}>
+      {/*Toolbar*/}
+      {smartUser && (
+        <div style={{ textAlign: "right" }}>
+          <span>
+            Logged in as <b>{smartUser.name.formatted}</b>
+          </span>
+          <button className="ui button" onClick={onLogOutClick} disabled={logOutLoading} style={{ marginLeft: 25 }}>
+            Log Out
+          </button>
+        </div>
+      )}
+
       {/*Patients table*/}
       <div>
-        <button
-          className="ui right floated primary button"
-          onClick={onAddPatientClick}
-          disabled={addPatientLoading}
-        >
-          Add Patient
-        </button>
         <h2 className="ui header">Patients</h2>
         <table className="ui table celled">
           <thead>
@@ -57,7 +78,7 @@ const PatientsPage = () => {
               <th>ID</th>
               <th>Name</th>
               <th>Birth Date</th>
-              <th>Actions</th>
+              <th style={{ textAlign: "right" }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -71,9 +92,9 @@ const PatientsPage = () => {
                   </td>
                   <td>{patient.name![0].given![0]}</td>
                   <td>{patient.birthDate}</td>
-                  <td>
+                  <td style={{ textAlign: "right" }}>
                     <button
-                      className="ui icon button"
+                      className="ui circular icon button"
                       onClick={() => onRemovePatientClick(patient.id)}
                       disabled={removePatientLoading}
                     >
@@ -85,18 +106,43 @@ const PatientsPage = () => {
             })}
           </tbody>
         </table>
+
+        {/*Adding Patient*/}
+        <h2 className="ui header">Add patient</h2>
+        <form onSubmit={onAddPatientSubmit}>
+          <div className="ui input">
+            <input
+              placeholder="Name"
+              type="text"
+              required
+              value={newPatient.name || ""}
+              onChange={(e) => setNewPatient({ ...newPatient, name: e.target.value })}
+            />
+          </div>
+          <div className="ui input" style={{ marginLeft: 10 }}>
+            <input
+              placeholder="Birth Date"
+              type="text"
+              required
+              pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+              value={newPatient.birthDate || ""}
+              onChange={(e) => setNewPatient({ ...newPatient, birthDate: e.target.value })}
+            />
+          </div>
+          <button className="ui button" type="submit" style={{ marginLeft: 10 }} disabled={addPatientLoading}>
+            Save
+          </button>
+        </form>
       </div>
 
-      {/*Selected Patient view*/}
+      {/*Selected Patient*/}
       {selectedPatient && (
-        <div>
-          <div className="ui divider"></div>
-          <div>
-            <h2 className="ui header">Patient {selectedPatient.id}</h2>
-            <code>
-              <pre>{JSON.stringify(selectedPatient, null, 2)}</pre>
-            </code>
-          </div>
+        <div className="ui secondary segment">
+          <i className="ui icon times" style={{ float: "right", cursor: "pointer" }} onClick={() => setSelectedPatient(null)}></i>
+          <h2 className="ui header">Patient {selectedPatient.id}</h2>
+          <code>
+            <pre>{JSON.stringify(selectedPatient, null, 2)}</pre>
+          </code>
         </div>
       )}
     </div>

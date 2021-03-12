@@ -2,12 +2,12 @@ import Client from "fhirclient/lib/Client";
 import React from "react";
 import FHIR from "fhirclient";
 
-export const SmartContext = React.createContext<{ smartClient: Client | null }>({ smartClient: null });
+export const SmartContext = React.createContext<{ smartClient: Client | null; smartUser?: any }>({ smartClient: null });
 
 export const initSmartClient = (): Promise<Client> => {
   return FHIR.oauth2.init({
-    iss: "https://oct8cat.aidbox.app",
-    clientId: "web-app",
+    iss: process.env.REACT_APP_SERVER_URL,
+    clientId: process.env.REACT_APP_CLIENT_ID,
     scope: "openid fhirUser user/read.*",
     redirectUri: "http://localhost:3000",
   });
@@ -43,9 +43,7 @@ export const useSmartRequest = <D = any>(): [
   ];
 };
 
-export const useSmartSearch = <D = any>(
-  resourceType: string
-): { loading: boolean; data: null | D[]; refetch: () => void } => {
+export const useSmartSearch = <D = any>(resourceType: string): { loading: boolean; data: null | D[]; refetch: () => void } => {
   const [smartRequest, { loading, data }] = useSmartRequest<D[]>();
   const { smartClient } = React.useContext(SmartContext);
 
@@ -53,9 +51,7 @@ export const useSmartSearch = <D = any>(
     if (!smartClient) {
       return;
     }
-    const promise = smartClient
-      .request(`/${resourceType}`)
-      .then((res) => res.entry.map((entry: any) => entry.resource));
+    const promise = smartClient.request(`/${resourceType}`).then((res) => res.entry.map((entry: any) => entry.resource));
     return smartRequest(promise);
   };
 
@@ -72,9 +68,7 @@ export const useSmartSearch = <D = any>(
 
 export type TSmartCreateFn<D> = (body?: any) => Promise<D>;
 
-export const useSmartCreate = <D>(
-  resourceType: string
-): [TSmartCreateFn<D>, { data: D | null; loading: boolean }] => {
+export const useSmartCreate = <D>(resourceType: string): [TSmartCreateFn<D>, { data: D | null; loading: boolean }] => {
   const [smartRequest, { loading, data, smartClient }] = useSmartRequest<D>();
 
   const smartCreate: TSmartCreateFn<D> = async (body?: any) => {
@@ -88,18 +82,24 @@ export const useSmartCreate = <D>(
   return [smartCreate, { loading, data }];
 };
 
-export type TSmartDeleteFn = (resourceId: string) => Promise<void>;
+export type TSmartDeleteFn = (resourceId?: string) => Promise<void>;
 
 export const useSmartDelete = (resourceType: string): [TSmartDeleteFn, { data: any; loading: boolean }] => {
   const [smartRequest, { loading, data, smartClient }] = useSmartRequest();
 
-  const smartDelete: TSmartDeleteFn = async (resourceId: string) => {
+  const smartDelete: TSmartDeleteFn = async (resourceId?: string) => {
     if (!smartClient) {
       return;
     }
-    const promise = smartClient.delete(`/${resourceType}/${resourceId}`);
+    const url = resourceId ? `/${resourceType}/${resourceId}` : `${resourceType}`;
+    const promise = smartClient.delete(url);
     return smartRequest(promise);
   };
 
   return [smartDelete, { loading, data }];
+};
+
+export const useSmartUser = () => {
+  const { smartUser } = React.useContext(SmartContext);
+  return smartUser;
 };
