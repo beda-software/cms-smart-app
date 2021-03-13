@@ -1,0 +1,9 @@
+.common{
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    line-height: 1.625;
+    flex: 1 1 auto;
+    min-width: 0.0rem;
+    background-color: transparent;
+    --bg-opacity: 1;
+}

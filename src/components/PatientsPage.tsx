@@ -1,5 +1,10 @@
 import React from "react";
-import { useSmartCreate, useSmartDelete, useSmartSearch, useSmartUser } from "../react-smart";
+import {
+  useSmartCreate,
+  useSmartDelete,
+  useSmartSearch,
+  useSmartUser,
+} from "../react-smart";
 
 export interface IPatient {
   id: string;
@@ -13,16 +18,26 @@ export interface INewPatient {
 }
 
 const PatientsPage = () => {
-  const [selectedPatient, setSelectedPatient] = React.useState<IPatient | null>(null);
+  const [selectedPatient, setSelectedPatient] = React.useState<IPatient | null>(
+    null
+  );
   const [newPatient, setNewPatient] = React.useState<INewPatient>({});
   const smartUser = useSmartUser();
 
   // Queries
-  const { data: patients, loading: patientsLoading, refetch: refetchPatients } = useSmartSearch<IPatient>("Patient");
+  const {
+    data: patients,
+    loading: patientsLoading,
+    refetch: refetchPatients,
+  } = useSmartSearch<IPatient>("Patient");
 
   // Mutations
-  const [addPatient, { loading: addPatientLoading }] = useSmartCreate<IPatient>("Patient");
-  const [removePatient, { loading: removePatientLoading }] = useSmartDelete("Patient");
+  const [addPatient, { loading: addPatientLoading }] = useSmartCreate<IPatient>(
+    "Patient"
+  );
+  const [removePatient, { loading: removePatientLoading }] = useSmartDelete(
+    "Patient"
+  );
   const [logOut, { loading: logOutLoading }] = useSmartDelete("Session");
 
   if (patientsLoading && !patients) {
@@ -57,19 +72,25 @@ const PatientsPage = () => {
 
   return (
     <div className="ui container" style={{ paddingTop: 50 }}>
-      {/*Toolbar*/}
+      {/* Toolbar */}
       {smartUser && (
         <div style={{ textAlign: "right" }}>
           <span>
             Logged in as <b>{smartUser.name.formatted}</b>
           </span>
-          <button className="ui button" onClick={onLogOutClick} disabled={logOutLoading} style={{ marginLeft: 25 }}>
+          <button
+            type="button"
+            className="ui button"
+            onClick={onLogOutClick}
+            disabled={logOutLoading}
+            style={{ marginLeft: 25 }}
+          >
             Log Out
           </button>
         </div>
       )}
 
-      {/*Patients table*/}
+      {/* Patients table */}
       <div>
         <h2 className="ui header">Patients</h2>
         <table className="ui table celled">
@@ -82,32 +103,34 @@ const PatientsPage = () => {
             </tr>
           </thead>
           <tbody>
-            {patients.map((patient) => {
-              return (
-                <tr key={patient.id}>
-                  <td>
-                    <a href="#" onClick={() => setSelectedPatient(patient)}>
-                      {patient.id}
-                    </a>
-                  </td>
-                  <td>{patient.name![0].given![0]}</td>
-                  <td>{patient.birthDate}</td>
-                  <td style={{ textAlign: "right" }}>
-                    <button
-                      className="ui circular icon button"
-                      onClick={() => onRemovePatientClick(patient.id)}
-                      disabled={removePatientLoading}
-                    >
-                      <i className="icon trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+            {patients.map((patient) => (
+              <tr key={patient.id}>
+                <td>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedPatient(patient)}
+                  >
+                    {patient.id}
+                  </button>
+                </td>
+                <td>{patient.name![0].given![0]}</td>
+                <td>{patient.birthDate}</td>
+                <td style={{ textAlign: "right" }}>
+                  <button
+                    type="button"
+                    className="ui circular icon button"
+                    onClick={() => onRemovePatientClick(patient.id)}
+                    disabled={removePatientLoading}
+                  >
+                    <i className="icon trash" />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
 
-        {/*Adding Patient*/}
+        {/* Adding Patient */}
         <h2 className="ui header">Add patient</h2>
         <form onSubmit={onAddPatientSubmit}>
           <div className="ui input">
@@ -116,7 +139,9 @@ const PatientsPage = () => {
               type="text"
               required
               value={newPatient.name || ""}
-              onChange={(e) => setNewPatient({ ...newPatient, name: e.target.value })}
+              onChange={(e) =>
+                setNewPatient({ ...newPatient, name: e.target.value })
+              }
             />
           </div>
           <div className="ui input" style={{ marginLeft: 10 }}>
@@ -126,20 +151,35 @@ const PatientsPage = () => {
               required
               pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
               value={newPatient.birthDate || ""}
-              onChange={(e) => setNewPatient({ ...newPatient, birthDate: e.target.value })}
+              onChange={(e) =>
+                setNewPatient({ ...newPatient, birthDate: e.target.value })
+              }
             />
           </div>
-          <button className="ui button" type="submit" style={{ marginLeft: 10 }} disabled={addPatientLoading}>
+          <button
+            className="ui button"
+            type="submit"
+            style={{ marginLeft: 10 }}
+            disabled={addPatientLoading}
+          >
             Save
           </button>
         </form>
       </div>
 
-      {/*Selected Patient*/}
+      {/* Selected Patient */}
       {selectedPatient && (
         <div className="ui secondary segment">
-          <i className="ui icon times" style={{ float: "right", cursor: "pointer" }} onClick={() => setSelectedPatient(null)}></i>
-          <h2 className="ui header">Patient {selectedPatient.id}</h2>
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
+          <i
+            className="ui icon times"
+            style={{ float: "right", cursor: "pointer" }}
+            onClick={() => setSelectedPatient(null)}
+          />
+          <h2 className="ui header">
+            Patient
+            {selectedPatient.id}
+          </h2>
           <code>
             <pre>{JSON.stringify(selectedPatient, null, 2)}</pre>
           </code>

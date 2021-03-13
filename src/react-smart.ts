@@ -1,17 +1,19 @@
 import Client from "fhirclient/lib/Client";
-import React from "react";
+import React, { useCallback } from "react";
 import FHIR from "fhirclient";
 
-export const SmartContext = React.createContext<{ smartClient: Client | null; smartUser?: any }>({ smartClient: null });
+export const SmartContext = React.createContext<{
+  smartClient: Client | null;
+  smartUser?: any;
+}>({ smartClient: null });
 
-export const initSmartClient = (): Promise<Client> => {
-  return FHIR.oauth2.init({
+export const initSmartClient = (): Promise<Client> =>
+  FHIR.oauth2.init({
     iss: process.env.REACT_APP_SERVER_URL,
     clientId: process.env.REACT_APP_CLIENT_ID,
     scope: "openid fhirUser user/read.*",
     redirectUri: "http://localhost:3000",
   });
-};
 
 export type TSmartRequestFn = (promise: Promise<any>) => any;
 
@@ -27,10 +29,11 @@ export const useSmartRequest = <D = any>(): [
       return;
     }
     setLoading(true);
-    return promise.then((data: any) => {
-      setData(data);
+    // eslint-disable-next-line consistent-return
+    return promise.then((dataD: any) => {
+      setData(dataD);
       setLoading(false);
-      return data;
+      return dataD;
     });
   };
   return [
@@ -43,21 +46,26 @@ export const useSmartRequest = <D = any>(): [
   ];
 };
 
-export const useSmartSearch = <D = any>(resourceType: string): { loading: boolean; data: null | D[]; refetch: () => void } => {
+export const useSmartSearch = <D = any>(
+  resourceType: string
+): { loading: boolean; data: null | D[]; refetch: () => void } => {
   const [smartRequest, { loading, data }] = useSmartRequest<D[]>();
   const { smartClient } = React.useContext(SmartContext);
 
-  const smartSearch = () => {
+  const smartSearch = useCallback(() => {
     if (!smartClient) {
       return;
     }
-    const promise = smartClient.request(`/${resourceType}`).then((res) => res.entry.map((entry: any) => entry.resource));
+    const promise = smartClient
+      .request(`/${resourceType}`)
+      .then((res) => res.entry.map((entry: any) => entry.resource));
+    // eslint-disable-next-line consistent-return
     return smartRequest(promise);
-  };
+  }, [resourceType, smartClient, smartRequest]);
 
   React.useEffect(() => {
     smartSearch();
-  }, [smartClient]);
+  }, [smartClient, smartSearch]);
 
   if (!smartClient) {
     return { loading: true, data: null, refetch: smartSearch };
@@ -68,14 +76,17 @@ export const useSmartSearch = <D = any>(resourceType: string): { loading: boolea
 
 export type TSmartCreateFn<D> = (body?: any) => Promise<D>;
 
-export const useSmartCreate = <D>(resourceType: string): [TSmartCreateFn<D>, { data: D | null; loading: boolean }] => {
+export const useSmartCreate = <D>(
+  resourceType: string
+): [TSmartCreateFn<D>, { data: D | null; loading: boolean }] => {
   const [smartRequest, { loading, data, smartClient }] = useSmartRequest<D>();
 
   const smartCreate: TSmartCreateFn<D> = async (body?: any) => {
     if (!smartClient) {
       return;
     }
-    const promise = smartClient.create({ resourceType: resourceType, ...body });
+    const promise = smartClient.create({ resourceType, ...body });
+    // eslint-disable-next-line consistent-return
     return smartRequest(promise);
   };
 
@@ -84,15 +95,20 @@ export const useSmartCreate = <D>(resourceType: string): [TSmartCreateFn<D>, { d
 
 export type TSmartDeleteFn = (resourceId?: string) => Promise<void>;
 
-export const useSmartDelete = (resourceType: string): [TSmartDeleteFn, { data: any; loading: boolean }] => {
+export const useSmartDelete = (
+  resourceType: string
+): [TSmartDeleteFn, { data: any; loading: boolean }] => {
   const [smartRequest, { loading, data, smartClient }] = useSmartRequest();
 
   const smartDelete: TSmartDeleteFn = async (resourceId?: string) => {
     if (!smartClient) {
       return;
     }
-    const url = resourceId ? `/${resourceType}/${resourceId}` : `${resourceType}`;
+    const url = resourceId
+      ? `/${resourceType}/${resourceId}`
+      : `${resourceType}`;
     const promise = smartClient.delete(url);
+    // eslint-disable-next-line consistent-return
     return smartRequest(promise);
   };
 
