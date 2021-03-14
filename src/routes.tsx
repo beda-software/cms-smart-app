@@ -1,25 +1,14 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { useStore } from "effector-react";
-import { $auth } from "./stores/auth";
+import { $token } from "./stores/auth";
 import SignIn from "./pages/auth/Signin";
-import Home from "./pages/home/Home";
-
-const Loading = () => <div>Loading...</div>;
+import IndexPage from "./pages";
 
 const Routes = (): any => {
-  const { loading, ready } = useStore($auth);
-  if (loading) {
-    return [
-      {
-        path: "/",
-        element: <Loading />,
-      },
-      { path: "*", element: <Navigate to="/" /> },
-    ];
-  }
+  const token = useStore($token);
 
-  if (!loading) {
+  if (!token) {
     return [
       {
         path: "/",
@@ -28,11 +17,11 @@ const Routes = (): any => {
       { path: "*", element: <Navigate to="/" /> },
     ];
   }
-  if (!loading && ready) {
+  if (token) {
     return [
       {
         path: "/",
-        element: <Home />,
+        element: <IndexPage />,
       },
       { path: "*", element: <Navigate to="/" /> },
     ];

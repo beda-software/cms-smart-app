@@ -12,20 +12,42 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>React App</title>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
   </head>
   <style>
+    :root{
+      --defaulColor: #495057;
+      --defaultBgColor: #353C50;
+      --defaultBorderColor: #ced4da;
+      --borderRadius: .25rem;
+    }
     #root{
       display: flex;
       height: 100%;
       width: 100%;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
+    }
+    html, body {
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      font-size: 16px;
+    }
+
+    main {
+      flex: 1;
+      overflow: auto;
+      background-color: rgba(53,60,80,.05);
+      padding-top: 1rem;
+    }
+
+    footer {
+      height: 25px;
     }
   </style>
   <body>
 
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root" ></div>
   </body>
 </html>

@@ -1,9 +1,14 @@
 .common{
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
-    line-height: 1.625;
-    flex: 1 1 auto;
-    min-width: 0.0rem;
+    display: flex;
+    padding: .5rem .75rem;
     background-color: transparent;
-    --bg-opacity: 1;
+    border-radius: var(--borderRadius);
+    margin: .25rem 0;
+    border: 1px solid var(--defaultBorderColor);
+    font-weight: bold;
+    color: var(--defaulColor);
+}
+.common:focus{
+    border-color: var(--defaultBgColor);
+    outline: none;
 }
