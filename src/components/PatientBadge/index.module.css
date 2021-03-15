@@ -1,40 +1,8 @@
-.header{
-    color: var(--defaulColor);
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: .5rem;
+.row {
+  display: flex;
+  margin: 0.25rem 0;
 }
-
-.root{
-    display: flex;
-    justify-content: space-between;
-    background-color: white;
-    padding: 1rem;
-    box-shadow: 0 .25rem 10px 3px rgba(53,60,80,0.25);
-}
-.label{
-   display: inline-block;
-    font-weight: bold;
-    min-width: 150px;
-}
-.value{
-    display: flex;
-    text-align: left;
-    flex-grow: 1;
-}
-.column{
-    flex: 1;
-}
-
-.column:first-child{
-    margin-right: 1rem;
-}
-
-.row{
-    flex-wrap: wrap;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: .25rem 0;
-
+.label {
+  min-width: 150px;
+  font-weight: bold;
 }

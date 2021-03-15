@@ -20,7 +20,6 @@ const Home = ({ client }: { client: Client }) => {
   }, [client]);
   return (
     <PatientProvider>
-      <div>{`Fetched ${patientRecords.length} resources`}</div>
       <PatientRecord resources={patientRecords} />
     </PatientProvider>
   );

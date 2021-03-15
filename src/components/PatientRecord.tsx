@@ -1,17 +1,9 @@
 import React, { FC } from "react";
-import {
-  AllergiesVisualizer,
-  CarePlansVisualizer,
-  ConditionsVisualizer,
-  EncountersVisualizer,
-  ImmunizationsVisualizer,
-  MedicationsVisualizer,
-  ObservationsVisualizer,
-  ProceduresVisualizer,
-  ReportsVisualizer,
-} from "fhir-visualizers";
+import ExplanationOfBenefits from "./ExplanationOfBenefits";
+
 import { usePatient } from "../context/PatientProvider";
 import PatientBadge from "./PatientBadge";
+import { explanationOfBenefits } from "../fixtures";
 
 type PatientRecordProps = {
   resources: ReadonlyArray<Record<string, any>>;
@@ -31,25 +23,7 @@ const PatientRecord: FC<PatientRecordProps> = ({ resources }) => {
   return (
     <div>
       <PatientBadge patient={patient} />
-      <ConditionsVisualizer rows={getResourceByType(resources, "Condition")} />
-      <ObservationsVisualizer
-        rows={getResourceByType(resources, "Observation")}
-      />
-      <ReportsVisualizer
-        rows={getResourceByType(resources, "DiagnosticReport")}
-      />
-      <MedicationsVisualizer
-        rows={getResourceByType(resources, "MedicationRequest")}
-      />
-      <AllergiesVisualizer
-        rows={getResourceByType(resources, "AllergyIntolerance")}
-      />
-      <CarePlansVisualizer rows={getResourceByType(resources, "CarePlan")} />
-      <ProceduresVisualizer rows={getResourceByType(resources, "Procedure")} />
-      <EncountersVisualizer rows={getResourceByType(resources, "Encounter")} />
-      <ImmunizationsVisualizer
-        rows={getResourceByType(resources, "Immunization")}
-      />
+      <ExplanationOfBenefits items={explanationOfBenefits} />
     </div>
   );
 };

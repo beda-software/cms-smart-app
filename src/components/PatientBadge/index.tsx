@@ -1,7 +1,7 @@
 import React from "react";
-import classes from "./index.module.css";
-import { getIn } from "../../lib/getIn";
+import { Grid, Header, Segment } from "semantic-ui-react";
 import { obsValue } from "../../lib/fhirHelpers";
+import classes from "./index.module.css";
 
 interface IPatientBadgeProps {
   patient: any;
@@ -62,86 +62,74 @@ const PatientBadge: React.FC<IPatientBadgeProps> = ({
   );
 
   return (
-    <div>
-      <div className={classes.header}>
-        <span>Patient</span>
-      </div>
-      <div className={classes.root}>
-        <div className={classes.column}>
+    <Segment>
+      <Header as="h2">Patient</Header>
+      <Grid columns={2}>
+        <Grid.Column>
           <div className={classes.row}>
-            <span className={classes.label}>Name</span>
-            <span className={classes.value}>
+            <div className={classes.label}>Name</div>
+            <div>
               {patient?.name?.[0]?.family},{" "}
               {patient?.name?.[0].given?.join(" ") || []}
-            </span>
+            </div>
           </div>
           <div className={classes.row}>
-            <span className={classes.label}>Gender</span>
-            <span className={classes.value}>{patient?.gender}</span>
+            <div className={classes.label}>Gender</div>
+            <div>{patient?.gender}</div>
           </div>
           <div className={classes.row}>
-            <span className={classes.label}>Date of Birth</span>
-            <span className={classes.value}>{patient?.birthDate}</span>
+            <div className={classes.label}>Date of Birth</div>
+            <div>{patient?.birthDate}</div>
           </div>
           <div className={classes.row}>
-            <span className={classes.label}>Address</span>
-            <span className={classes.value}>
-              {patient?.address?.[0]?.line?.join(" ")}
-            </span>
+            <div className={classes.label}>Address</div>
+            <div>{patient?.address?.[0]?.line?.join(" ")}</div>
           </div>
-
           <div className={classes.row}>
-            <span className={classes.label}>City, State</span>
-            <span className={classes.value}>
+            <div className={classes.label}>City, State</div>
+            <div>
               {patient?.address?.[0]?.city}, {patient?.address?.[0]?.state}
-            </span>
+            </div>
           </div>
           <div className={classes.row}>
-            <span className={classes.label}>Postal Code</span>
-            <span className={classes.value}>
-              {patient?.address?.[0]?.postalCode}
-            </span>
+            <div className={classes.label}>Postal Code</div>
+            <div>{patient?.address?.[0]?.postalCode}</div>
           </div>
           {patient.deceasedDateTime && (
             <div className={classes.row}>
               <span className={classes.label}>Cause of Death</span>
-              <span className={classes.value}>{causeOfDeathObs}</span>
+              <span>{causeOfDeathObs}</span>
             </div>
           )}
-        </div>
-        <div className={classes.column}>
+        </Grid.Column>
+        <Grid.Column>
           <div className={classes.row}>
-            <span className={classes.label}>Height</span>
-            <span className={classes.value}>
-              {obsValue(heightObs) || "unk."}
-            </span>
+            <div className={classes.label}>Height</div>
+            <div>{obsValue(heightObs) || "unk."}</div>
           </div>
           <div className={classes.row}>
-            <span className={classes.label}>Weight</span>
-            <span className={classes.value}>
-              {obsValue(weightObs) || "unk."}
-            </span>
-          </div>
-
-          <div className={classes.row}>
-            <span className={classes.label}>Race</span>
-            <span className={classes.value}>{race || "unk."}</span>
+            <div className={classes.label}>Weight</div>
+            <div>{obsValue(heightObs) || "unk."}</div>
           </div>
           <div className={classes.row}>
-            <span className={classes.label}>Ethnicity</span>
-            <span className={classes.value}>{ethnicity || "unk."}</span>
+            <div className={classes.label}>Race</div>
+            <div>{race || "unk."}</div>
           </div>
           <div className={classes.row}>
-            <span className={classes.label}>Language</span>
-            <span className={classes.value}>{language || "unk."}</span>
+            <div className={classes.label}>Ethnicity</div>
+            <div>{ethnicity || "unk."}</div>
           </div>
           <div className={classes.row}>
-            <span className={classes.label}>Blood Type</span>
-            <span className={classes.value}>unknown</span>
+            <div className={classes.label}>Language</div>
+            <div>{language || "unk."}</div>
           </div>
-        </div>
-      </div>
-    </div>
+          <div className={classes.row}>
+            <div className={classes.label}>Blood Type</div>
+            <div>unk.</div>
+          </div>
+        </Grid.Column>
+      </Grid>
+    </Segment>
   );
 };
 
