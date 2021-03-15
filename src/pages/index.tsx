@@ -14,6 +14,7 @@ const IndexPage: React.FC = () => {
   useEffect(() => {
     if (fhir) {
       initSmartClient(fhir).then((smartClient) => {
+        console.log(smartClient);
         setClient(smartClient);
       });
     }

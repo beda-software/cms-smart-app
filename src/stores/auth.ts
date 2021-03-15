@@ -1,5 +1,6 @@
 import { createDomain, createEvent, createStore } from "effector";
 import { persist } from "effector-storage/local/fp";
+import env from "../env";
 
 interface ISingInProps {
   username: string;
@@ -10,19 +11,16 @@ const authDomain = createDomain("auth");
 
 export const signInFx = authDomain.createEffect(
   async ({ username, password }: ISingInProps) => {
-    const response = await fetch(
-      "https://narkotrolltest.edge.aidbox.app/auth/token",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          grant_type: "password",
-          username,
-          password,
-          client_id: "smart-login",
-        }),
-      }
-    );
+    const response = await fetch(`${env.FHIR_SERVER}/auth/token`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        grant_type: "password",
+        username,
+        password,
+        client_id: "smart-login",
+      }),
+    });
     const json = await response.json();
     if (json?.error) {
       return Promise.reject(json);
@@ -32,16 +30,13 @@ export const signInFx = authDomain.createEffect(
 );
 
 export const getUserDataFx = authDomain.createEffect(async (token: string) => {
-  const response = await fetch(
-    "https://narkotrolltest.edge.aidbox.app/auth/userinfo",
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await fetch(`${env.FHIR_SERVER}/auth/userinfo`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
   const json = await response.json();
   if (json?.message) {
     return Promise.reject(json);
@@ -54,14 +49,11 @@ export const smartLaunchFx = authDomain.createEffect(
     const formData = new FormData();
     formData.append("patientId", patient);
     formData.append("scope", "launch");
-    formData.append("clientId", "web-app");
-    const response = await fetch(
-      "https://narkotrolltest.edge.aidbox.app/smart/launch",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
+    formData.append("clientId", env.CLIENT_SMART);
+    const response = await fetch(`${env.FHIR_SERVER}/smart/launch`, {
+      method: "POST",
+      body: formData,
+    });
     const json = await response.json();
     if (json?.link) {
       return json;

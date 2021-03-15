@@ -2,13 +2,14 @@ import { mappers } from "fhir-mapper";
 import Client from "fhirclient/lib/Client";
 import FHIR from "fhirclient";
 import { ALL_RESOURCES_PATIENT_REFERENCE } from "./patient";
+import env from "../env";
 
 export const initSmartClient = (data: any): Promise<Client> =>
   FHIR.oauth2.init({
     iss: data.iss,
     launch: data.launch,
-    clientId: "web-app",
-    scope: "launch/patient openid profile",
+    clientId: env.CLIENT_SMART,
+    scope: env.SCOPE,
     patientId: data.patientId,
   });
 
