@@ -8,7 +8,7 @@ export const initSmartClient = (data: any): Promise<Client> =>
     iss: data.iss,
     launch: data.launch,
     clientId: "web-app",
-    scope: "launch/patient launch openid profile",
+    scope: "launch/patient openid profile",
     patientId: data.patientId,
   });
 
