@@ -7,11 +7,7 @@
     "prettier",
     "plugin:prettier/recommended"
   ],
-  "plugins": [
-    "react",
-    "@typescript-eslint",
-    "jest"
-  ],
+  "plugins": ["react", "@typescript-eslint", "jest"],
   "env": {
     "browser": true,
     "es6": true,
@@ -35,6 +31,7 @@
     "react/prop-types": "off",
     "import/prefer-default-export": "off",
     "linebreak-style": "off",
+    "no-debugger": "off",
     "prettier/prettier": [
       "error",
       {

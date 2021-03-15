@@ -1,5 +1,7 @@
 import { createDomain, createEvent, createStore } from "effector";
+import Client from "fhirclient/lib/Client";
 import { persist } from "effector-storage/local/fp";
+import { initSmartClient } from "../lib";
 
 interface ISingInProps {
   username: string;
@@ -98,14 +100,26 @@ export const $user = createStore<any>({ loading: true, data: null })
   })
   .reset(resetAuth);
 
-$user.watch((state) => {
-  if (!state.loading && !state.fhir) {
-    const user = state.data;
-    const link = user?.link.find((l: any) => l.link.resourceType === "Patient");
-    if (link) {
-      smartLaunchFx(link.link.id);
-    }
+const initSmartClientFx = authDomain.createEffect(initSmartClient);
+
+export const $client = createStore<null | Client>(null).on(
+  initSmartClientFx.done,
+  (state, { result: client }) => {
+    return client;
   }
+);
+
+$user.watch((state) => {
+  if (state.fhir) {
+    initSmartClientFx(state.fhir);
+  }
+  // if (!state.loading && !state.fhir) {
+  //   const user = state.data;
+  //   const link = user?.link.find((l: any) => l.link.resourceType === "Patient");
+  //   if (link) {
+  //     smartLaunchFx(link.link.id);
+  //   }
+  // }
 });
 
 $token.watch((state) => {

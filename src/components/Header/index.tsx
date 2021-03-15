@@ -2,10 +2,11 @@ import React from "react";
 import classes from "./index.module.css";
 import { getReadableNameFromUser } from "../../lib/fhirHelpers";
 import Button from "../Button";
-import { resetAuth } from "../../stores/auth";
+import { resetAuth, smartLaunchFx } from "../../stores/auth";
 
 const Header = (props: any) => {
   const { user } = props;
+  const link = user?.link.find((l: any) => l.link.resourceType === "Patient");
 
   return (
     <header className={classes.root}>
@@ -14,6 +15,12 @@ const Header = (props: any) => {
           <img src={user.photo} className={classes.avatar} alt="" />
         )}
         <span>{getReadableNameFromUser(user.name)}</span>
+      </div>
+      <div>
+        <Button
+          title="Load patient"
+          onClick={() => smartLaunchFx(link.link.id)}
+        />
       </div>
       <div>
         <Button

@@ -3,14 +3,15 @@ import Client from "fhirclient/lib/Client";
 import FHIR from "fhirclient";
 import { ALL_RESOURCES_PATIENT_REFERENCE } from "./patient";
 
-export const initSmartClient = (data: any): Promise<Client> =>
-  FHIR.oauth2.init({
+export const initSmartClient = (data: any): Promise<Client> => {
+  return FHIR.oauth2.init({
     iss: data.iss,
     launch: data.launch,
     clientId: "web-app",
     scope: "launch/patient launch openid profile",
     patientId: data.patientId,
   });
+};
 
 const MapperClass = mappers.SyntheaToV09;
 const mapperInstance = MapperClass ? new MapperClass() : null;

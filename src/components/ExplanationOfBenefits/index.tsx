@@ -1,7 +1,7 @@
 import React from "react";
 import { Accordion, Header, List, Segment } from "semantic-ui-react";
 
-const ExplanationOfBenefitVisualizer: React.FC<{
+const ExplanationOfBenefit: React.FC<{
   items: Array<any>;
 }> = ({ items }) => {
   const [selectedEOB, setSelectedEOB] = React.useState<any | null>(null);
@@ -26,7 +26,7 @@ const ExplanationOfBenefitVisualizer: React.FC<{
                     <List>
                       {eob.item.map((item: any) => {
                         return (
-                          <List.Item key={item.id}>
+                          <List.Item key={item.sequence}>
                             <Segment>
                               <pre>{JSON.stringify(item, null, 2)}</pre>
                             </Segment>
@@ -63,4 +63,4 @@ const ExplanationOfBenefitVisualizer: React.FC<{
   );
 };
 
-export default ExplanationOfBenefitVisualizer;
+export default ExplanationOfBenefit;
