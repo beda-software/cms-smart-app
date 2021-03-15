@@ -15,11 +15,10 @@ COPY . ./
 RUN npm run build
 
 ### STAGE 2: Production Environment ###
-FROM nginx:1.13.12-alpine
-COPY --from=builder /app/build /usr/share/nginx/html
+FROM nginx:1.19.8-alpine
+COPY --from=builder /app/build /var/www
 
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx/nginx.conf /etc/nginx/conf.d
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
