@@ -80,5 +80,5 @@ steps:
       - echo $cluster_service_account > creds.json
       - gcloud auth activate-service-account --key-file creds.json
       - gcloud container clusters get-credentials villagecare --zone us-central1-c --project villagecare
-      - kubectl get pods
+      - kubectl get pods -n dev
 
