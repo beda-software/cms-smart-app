@@ -71,20 +71,14 @@ steps:
 #    depends_on:
 #      - build-smart-app-sandbox
 
-  - name: deploy
-    image: sinlead/drone-kubectl
-    settings:
-      kubernetes_server:
-        from_secret: k8s_server
-      kubernetes_cert:
-        from_secret: k8s_cert
-      kubernetes_token:
-        from_secret: k8s_token
-    commands:
-      - kubectl get pods
-    when:
-      branch:
-        - master
-#    depends_on:
-#      - push-smart-app-sandbox
-#      - push-smart-app-dev
+  - name: reload all  sof
+      image: claranet/gcloud-kubectl-docker
+      environment:
+        cluster_service_account:
+          from_secret: cluster_service_account
+      commands:
+        - echo $cluster_service_account > creds.json
+        - gcloud auth activate-service-account --key-file creds.json
+        - gcloud container clusters get-credentials villagecare --zone us-central1-c --project villagecare
+        - kubectl get pods
+
