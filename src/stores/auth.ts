@@ -20,7 +20,7 @@ export const signInFx = authDomain.createEffect(
         grant_type: "password",
         username,
         password,
-        client_id: "smart-login",
+        client_id: env.CLIENT_LOGIN,
       }),
     });
     const json = await response.json();

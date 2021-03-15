@@ -38,6 +38,11 @@ steps:
       repo: eu.gcr.io/villagecare/sof-sandbox
       context: .
       dockerfile: Dockerfile
+      build_args_from_env:
+        - REACT_APP_FHIR_SERVER
+        - REACT_APP_CLIENT_LOGIN
+        - REACT_APP_CLIENT_SMART
+        - REACT_APP_SCOPE
     when:
       branch:
         - master
@@ -64,6 +69,11 @@ steps:
       repo: eu.gcr.io/villagecare/sof-dev
       context: .
       dockerfile: Dockerfile
+      build_args_from_env:
+        - REACT_APP_FHIR_SERVER
+        - REACT_APP_CLIENT_LOGIN
+        - REACT_APP_CLIENT_SMART
+        - REACT_APP_SCOPE
     when:
       branch:
         - master
