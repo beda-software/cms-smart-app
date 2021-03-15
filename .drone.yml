@@ -14,7 +14,6 @@ steps:
     commands:
       - export CI=false
       - npm ci
-      - npm run build
     when:
       branch:
         - master
@@ -36,7 +35,7 @@ steps:
       password:
         from_secret: docker_password
       registry: eu.gcr.io
-      repo: villagecare/sof-sandbox
+      repo: eu.gcr.io/villagecare/sof-sandbox
       context: .
       dockerfile: Dockerfile
     when:
@@ -62,7 +61,7 @@ steps:
       password:
         from_secret: docker_password
       registry: eu.gcr.io
-      repo: villagecare/sof-dev
+      repo: eu.gcr.io/villagecare/sof-dev
       context: .
       dockerfile: Dockerfile
     when:
@@ -83,4 +82,7 @@ steps:
       - kubectl get pods -n dev
     depends_on:
       - push-smart-app-dev
+    when:
+      branch:
+        - master
 

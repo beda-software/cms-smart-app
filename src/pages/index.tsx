@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Client from "fhirclient/lib/Client";
 import { useStore } from "effector-react";
 import { FHIRClientProvider } from "../context/FhirClient";
-import { initSmartClient } from "../lib";
 import Header from "../components/Header";
 import Home from "./home/Home";
 import { $client, $user } from "../stores/auth";

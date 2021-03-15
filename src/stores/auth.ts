@@ -97,6 +97,7 @@ const initSmartClientFx = authDomain.createEffect(initSmartClient);
 export const $client = createStore<null | Client>(null).on(
   initSmartClientFx.done,
   (state, { result: client }) => {
+    console.log(client);
     return client;
   }
 );

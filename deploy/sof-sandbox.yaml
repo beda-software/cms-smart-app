@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sof-sandbox
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      name: sof-sandbox-http
+      targetPort: 80
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sof-sandbox
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: sof-sandbox
+          image: "eu.gcr.io/villagecare/sof-sandbox"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80

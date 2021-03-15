@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sof-dev
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      name: sof-dev-http
+      targetPort: 80
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sof-dev
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: sof-dev
+          image: "eu.gcr.io/villagecare/sof-dev"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
