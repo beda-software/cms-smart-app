@@ -79,8 +79,8 @@ steps:
       - echo $cluster_service_account > creds.json
       - gcloud auth activate-service-account --key-file creds.json
       - gcloud container clusters get-credentials villagecare --zone us-central1-c --project villagecare
-      - kubectl -n dev rollout restart delopyment dev-sof-dev
-      - kubectl -n dev rollout restart delopyment dev-sof-sandbox
+      - kubectl -n dev rollout restart deployment dev-sof-dev
+      - kubectl -n dev rollout restart deployment dev-sof-sandbox
     depends_on:
       - push-smart-app-dev
     when:
