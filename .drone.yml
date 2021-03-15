@@ -21,7 +21,7 @@ steps:
   - name: push-smart-app-sandbox
     image: plugins/docker
     environment:
-      REACT_APP_AIDBOX_URL:
+      REACT_APP_FHIR_SERVER:
         from_secret: sandbox_url
       REACT_APP_CLIENT_LOGIN:
         from_secret: sandbox_login
@@ -47,7 +47,7 @@ steps:
   - name: push-smart-app-dev
     image: plugins/docker
     environment:
-      REACT_APP_AIDBOX_URL:
+      REACT_APP_FHIR_SERVER:
         from_secret: dev_url
       REACT_APP_CLIENT_LOGIN:
         from_secret: dev_login
