@@ -9,67 +9,67 @@ when:
     - push
 
 steps:
-  #  - name: build-smart-app
-  #    image: node:14.16.0-stretch
-  #    commands:
-  #      - export CI=false
-  #      - npm ci
-  #      - npm run build
-  #    when:
-  #      branch:
-  #        - master
-  #
-  #  - name: push-smart-app-sandbox
-  #    image: plugins/docker
-  #    environment:
-  #      REACT_APP_AIDBOX_URL:
-  #        from_secret: sandbox_url
-  #      REACT_APP_CLIENT_LOGIN:
-  #        from_secret: sandbox_login
-  #      REACT_APP_CLIENT_SMART:
-  #        from_secret: sandbox_smart
-  #      REACT_APP_SCOPE:
-  #        from_secret: sandbox_scope
-  #    settings:
-  #      username:
-  #        from_secret: docker_username
-  #      password:
-  #        from_secret: docker_password
-  #      registry: eu.gcr.io
-  #      repo: villagecare/sof-sandbox
-  #      context: .
-  #      dockerfile: Dockerfile
-  #    when:
-  #      branch:
-  #        - master
-  #    depends_on:
-  #      - build-smart-app
-  #
-  #  - name: push-smart-app-dev
-  #    image: plugins/docker
-  #    environment:
-  #      REACT_APP_AIDBOX_URL:
-  #        from_secret: dev_url
-  #      REACT_APP_CLIENT_LOGIN:
-  #        from_secret: dev_login
-  #      REACT_APP_CLIENT_SMART:
-  #        from_secret: dev_smart
-  #      REACT_APP_SCOPE:
-  #        from_secret: dev_scope
-  #    settings:
-  #      username:
-  #        from_secret: docker_username
-  #      password:
-  #        from_secret: docker_password
-  #      registry: eu.gcr.io
-  #      repo: villagecare/sof-dev
-  #      context: .
-  #      dockerfile: Dockerfile
-  #    when:
-  #      branch:
-  #        - master
-  #    depends_on:
-  #      - build-smart-app-sandbox
+  - name: build-smart-app
+    image: node:14.16.0-stretch
+    commands:
+      - export CI=false
+      - npm ci
+      - npm run build
+    when:
+      branch:
+        - master
+
+  - name: push-smart-app-sandbox
+    image: plugins/docker
+    environment:
+      REACT_APP_AIDBOX_URL:
+        from_secret: sandbox_url
+      REACT_APP_CLIENT_LOGIN:
+        from_secret: sandbox_login
+      REACT_APP_CLIENT_SMART:
+        from_secret: sandbox_smart
+      REACT_APP_SCOPE:
+        from_secret: sandbox_scope
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      registry: eu.gcr.io
+      repo: villagecare/sof-sandbox
+      context: .
+      dockerfile: Dockerfile
+    when:
+      branch:
+        - master
+    depends_on:
+      - build-smart-app
+
+  - name: push-smart-app-dev
+    image: plugins/docker
+    environment:
+      REACT_APP_AIDBOX_URL:
+        from_secret: dev_url
+      REACT_APP_CLIENT_LOGIN:
+        from_secret: dev_login
+      REACT_APP_CLIENT_SMART:
+        from_secret: dev_smart
+      REACT_APP_SCOPE:
+        from_secret: dev_scope
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      registry: eu.gcr.io
+      repo: villagecare/sof-dev
+      context: .
+      dockerfile: Dockerfile
+    when:
+      branch:
+        - master
+    depends_on:
+      - build-smart-app-sandbox
 
   - name: reload all  sof
     image: claranet/gcloud-kubectl-docker
