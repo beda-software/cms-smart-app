@@ -1,7 +1,7 @@
 import { createDomain, createEvent, createStore } from "effector";
 import Client from "fhirclient/lib/Client";
 import { persist } from "effector-storage/local/fp";
-import { initSmartClient } from "../lib";
+import { initSmartClient, readySmartClient } from "../lib";
 import env from "../env";
 
 interface ISingInProps {
@@ -46,24 +46,6 @@ export const getUserDataFx = authDomain.createEffect(async (token: string) => {
   return json;
 });
 
-export const smartLaunchFx = authDomain.createEffect(
-  async (patient: string) => {
-    const formData = new FormData();
-    formData.append("patientId", patient);
-    formData.append("scope", "launch");
-    formData.append("clientId", env.CLIENT_SMART);
-    const response = await fetch(`${env.FHIR_SERVER}/smart/launch`, {
-      method: "POST",
-      body: formData,
-    });
-    const json = await response.json();
-    if (json?.link) {
-      return json;
-    }
-    return Promise.reject(json);
-  }
-);
-
 export const resetAuth = createEvent();
 
 export const $token = authDomain
@@ -75,36 +57,29 @@ export const $token = authDomain
 
 export const $user = createStore<any>({ loading: true, data: null })
   .on(getUserDataFx.done, (_, data) => {
-    return { loading: false, data: data.result, fhir: null };
-  })
-  .on(smartLaunchFx.done, (state, data) => {
-    const url = new URL(data.result.link);
-    const user = state.data;
-    const link = user?.link.find((l: any) => l.link.resourceType === "Patient");
-    return {
-      ...state,
-      fhir: {
-        patientId: link.link.id,
-        iss: url.searchParams.get("iss"),
-        launch: url.searchParams.get("launch"),
-      },
-    };
+    return { loading: false, data: data.result };
   })
   .reset(resetAuth);
 
-const initSmartClientFx = authDomain.createEffect(initSmartClient);
+export const initSmartClientFx = authDomain.createEffect(initSmartClient);
+export const readySmartClientFx = authDomain.createEffect(readySmartClient);
 
-export const $client = createStore<null | Client>(null).on(
-  initSmartClientFx.done,
-  (state, { result: client }) => {
-    console.log("fsdfs", client);
-    return client;
-  }
-);
+export const $client = createStore<any>({
+  auth: false,
+  client: null,
+})
+  .on(initSmartClientFx.done, (state) => {
+    return { ...state, auth: true };
+  })
+  .on(readySmartClientFx.done, (_, data) => {
+    return { auth: true, client: data.result };
+  })
+  .reset(resetAuth);
 
-$user.watch((state) => {
-  if (state.fhir) {
-    initSmartClientFx(state.fhir);
+$client.watch((state) => {
+  const url = new URL(window.location.href);
+  if (url.searchParams.get("code")) {
+    readySmartClientFx();
   }
 });
 

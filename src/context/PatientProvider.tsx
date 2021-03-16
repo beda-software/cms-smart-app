@@ -17,13 +17,7 @@ export const PatientContext = createContext<fhir.Patient | null>(null);
 export const PatientProvider: FC<PatientProviderProps> = ({ children }) => {
   const client = useFHIRClient();
   const [patient, setPatient] = useState<any | null>(null);
-  useEffect(() => {
-    if (client?.patient?.id) {
-      client.patient.read().then((res: any) => {
-        setPatient(res);
-      });
-    }
-  }, [client]);
+
   return patient == null ? (
     <div>Loading...</div>
   ) : (

@@ -36,9 +36,11 @@ export const obsValue = (entry: any) => {
   return "";
 };
 
-export const getReadableNameFromUser = (name: any) => {
+export const getReadableNameFromUser = (name: any, withComma = false) => {
   if (name?.formatted) {
     return name.formatted;
   }
-  return `${name?.givenName} ${name?.givenFamily}`;
+  return withComma
+    ? `${name?.givenFamily}, ${name?.givenName}`
+    : ` ${name?.givenName} ${name?.givenFamily}`;
 };

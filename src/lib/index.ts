@@ -4,14 +4,17 @@ import FHIR from "fhirclient";
 import { ALL_RESOURCES_PATIENT_REFERENCE } from "./patient";
 import env from "../env";
 
-export const initSmartClient = (data: any): Promise<Client> => {
-  return FHIR.oauth2.init({
-    iss: data.iss,
-    launch: data.launch,
+export const initSmartClient = (patientId: string): Promise<void | string> => {
+  return FHIR.oauth2.authorize({
+    iss: env.FHIR_SERVER,
     clientId: env.CLIENT_SMART,
     scope: env.SCOPE,
-    patientId: data.patientId,
+    patientId,
   });
+};
+
+export const readySmartClient = (): Promise<Client> => {
+  return FHIR.oauth2.ready();
 };
 
 const MapperClass = mappers.SyntheaToV09;

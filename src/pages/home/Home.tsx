@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Client from "fhirclient/lib/Client";
 import { getPatientRecord } from "../../lib";
-import { PatientProvider } from "../../context/PatientProvider";
 import PatientRecord from "../../components/PatientRecord";
 
-const Home = ({ client }: { client: Client }) => {
+const Home = ({ client }: { client: Client | null }) => {
   const [patientRecords, setPatientRecords] = useState<Array<any>>([]);
-  console.log("inner", client);
   useEffect(() => {
     if (client) {
       getPatientRecord(client)
@@ -18,11 +16,7 @@ const Home = ({ client }: { client: Client }) => {
         .catch((e) => console.log("error", e));
     }
   }, [client]);
-  return (
-    <PatientProvider>
-      <PatientRecord resources={patientRecords} />
-    </PatientProvider>
-  );
+  return <PatientRecord />;
 };
 
 export default Home;

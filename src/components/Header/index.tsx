@@ -1,27 +1,27 @@
 import React from "react";
-import { Button, Menu, Image } from "semantic-ui-react";
+import { Button, Menu, Container } from "semantic-ui-react";
 import classes from "./index.module.css";
 import { getReadableNameFromUser } from "../../lib/fhirHelpers";
-import { resetAuth, smartLaunchFx } from "../../stores/auth";
+import { resetAuth } from "../../stores/auth";
 import logo from "../../hslogo.png";
 
 const Header = (props: any) => {
   const { user } = props;
-  const link = user?.link.find((l: any) => l.link.resourceType === "Patient");
-
   return (
-    <header className={classes.root}>
+    <Container className={classes.root}>
       <Menu secondary>
         <Menu.Menu position="left">
-          <Menu.Item>
-            <img src={logo} alt="" />
+          <Menu.Item className={classes.logo}>
+            <img src={logo} className={classes.image} alt="" />
           </Menu.Item>
         </Menu.Menu>
         <Menu.Menu position="right">
           <Menu.Item>
-            <span>{getReadableNameFromUser(user.name)}</span>
+            <span>
+              <b>{getReadableNameFromUser(user.name)}</b>
+            </span>
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item className={classes.no}>
             <Button
               basic
               color="black"
@@ -34,7 +34,7 @@ const Header = (props: any) => {
           </Menu.Item>
         </Menu.Menu>
       </Menu>
-    </header>
+    </Container>
   );
 };
 
