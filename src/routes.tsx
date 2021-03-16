@@ -7,7 +7,6 @@ import IndexPage from "./pages";
 
 const Routes = (): any => {
   const token = useStore($token);
-
   if (!token) {
     return [
       {
@@ -26,6 +25,7 @@ const Routes = (): any => {
       { path: "*", element: <Navigate to="/" /> },
     ];
   }
+
   return null;
 };
 

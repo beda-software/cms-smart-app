@@ -87,13 +87,12 @@ steps:
   - name: push-smart-app-sandbox
     image: banzaicloud/drone-kaniko
     settings:
-      cache: true
-      json_key:
-        from_secret: storage_service_account
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
       registry: eu.gcr.io
-      repo: villagecare/sof-sandbox
-      context: .
-      dockerfile: Dockerfile
+      repo: eu.gcr.io/villagecare/sof-sandbox
       build_args:
         - DIST_PATH=dist-s
     when:
@@ -105,13 +104,12 @@ steps:
   - name: push-smart-app-dev
     image: banzaicloud/drone-kaniko
     settings:
-      cache: true
-      json_key:
-        from_secret: storage_service_account
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
       registry: eu.gcr.io
-      repo: villagecare/sof-dev
-      context: .
-      dockerfile: Dockerfile
+      repo: eu.gcr.io/villagecare/sof-dev
       build_args:
         - DIST_PATH=dist-d
     when:

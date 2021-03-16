@@ -70,8 +70,8 @@ export const $token = authDomain
   .createStore<string>("", { name: "auth" })
   .on(signInFx.done, (_state, data) => data.result.access_token)
   .on(getUserDataFx.fail, () => "")
-  .reset(resetAuth)
-  .thru(persist({ key: "aidbox.login" }));
+  .thru(persist({ key: "aidbox.login" }))
+  .reset(resetAuth);
 
 export const $user = createStore<any>({ loading: true, data: null })
   .on(getUserDataFx.done, (_, data) => {
@@ -97,7 +97,7 @@ const initSmartClientFx = authDomain.createEffect(initSmartClient);
 export const $client = createStore<null | Client>(null).on(
   initSmartClientFx.done,
   (state, { result: client }) => {
-    console.log(client);
+    console.log("fsdfs", client);
     return client;
   }
 );
@@ -106,13 +106,6 @@ $user.watch((state) => {
   if (state.fhir) {
     initSmartClientFx(state.fhir);
   }
-  // if (!state.loading && !state.fhir) {
-  //   const user = state.data;
-  //   const link = user?.link.find((l: any) => l.link.resourceType === "Patient");
-  //   if (link) {
-  //     smartLaunchFx(link.link.id);
-  //   }
-  // }
 });
 
 $token.watch((state) => {

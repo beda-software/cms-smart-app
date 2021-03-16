@@ -6,7 +6,7 @@ import PatientRecord from "../../components/PatientRecord";
 
 const Home = ({ client }: { client: Client }) => {
   const [patientRecords, setPatientRecords] = useState<Array<any>>([]);
-
+  console.log("inner", client);
   useEffect(() => {
     if (client) {
       getPatientRecord(client)

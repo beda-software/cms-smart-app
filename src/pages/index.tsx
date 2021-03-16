@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import Client from "fhirclient/lib/Client";
+import React from "react";
 import { useStore } from "effector-react";
 import { FHIRClientProvider } from "../context/FhirClient";
 import Header from "../components/Header";
@@ -7,9 +6,8 @@ import Home from "./home/Home";
 import { $client, $user } from "../stores/auth";
 
 const IndexPage: React.FC = () => {
-  const { loading, data: user, fhir } = useStore($user);
+  const { loading, data: user } = useStore($user);
   const client = useStore($client);
-
   if (loading) {
     return <div>Loading...</div>;
   }

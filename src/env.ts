@@ -10,5 +10,6 @@ const env = (typeof process && process.env) || {};
 Object.keys(data).forEach((varName) => {
   data[varName] = env[`REACT_APP_${varName}`] || data[varName];
 });
+console.log(data);
 
 export default data;
