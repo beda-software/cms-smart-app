@@ -92,7 +92,7 @@ steps:
       password:
         from_secret: docker_password
       registry: eu.gcr.io
-      repo: eu.gcr.io/villagecare/sof-sandbox
+      repo: villagecare/sof-sandbox
       context: .
       dockerfile: Dockerfile
       build_args:
@@ -111,7 +111,7 @@ steps:
       password:
         from_secret: docker_password
       registry: eu.gcr.io
-      repo: eu.gcr.io/villagecare/sof-dev
+      repo: villagecare/sof-dev
       context: .
       dockerfile: Dockerfile
       build_args:
