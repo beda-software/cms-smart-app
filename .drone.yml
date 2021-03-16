@@ -87,10 +87,9 @@ steps:
   - name: push-smart-app-sandbox
     image: banzaicloud/drone-kaniko
     settings:
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
+      cache: true
+      json_key:
+        from_secret: storage_service_account
       registry: eu.gcr.io
       repo: villagecare/sof-sandbox
       context: .
@@ -106,10 +105,9 @@ steps:
   - name: push-smart-app-dev
     image: banzaicloud/drone-kaniko
     settings:
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
+      cache: true
+      json_key:
+        from_secret: storage_service_account
       registry: eu.gcr.io
       repo: villagecare/sof-dev
       context: .
