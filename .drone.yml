@@ -8,7 +8,17 @@ when:
   event:
     - push
 
+
+
 steps:
+  - name: restore-cache
+    image: homerovalle/drone-gcs-cache
+    pull: true
+    bucket: villagecare-ci-sof-cache
+    json_key:
+      from_secret: storage_service_account
+    restore: true
+
   - name: install-dependcy
     image: node:14.16.0-stretch
     commands:
@@ -17,6 +27,18 @@ steps:
     when:
       branch:
         - master
+
+  - name: rebuild-cache
+      image: homerovalle/drone-gcs-cache
+      pull: true
+      bucket: villagecare-ci-sof-cache
+      json_key:
+        from_secret: storage_service_account
+      rebuild: true
+      mount:
+        - node_modules
+      when:
+        event: push
 
   - name: build-smart-app-sandbox
     image: node:14.16.0-stretch
@@ -30,7 +52,8 @@ steps:
       REACT_APP_SCOPE:
         from_secret: sandbox_scope
     commands:
-        - npm run build:sandbox
+      - export CI=false
+      - npm run build:sandbox
     when:
       branch:
         - master
@@ -49,6 +72,7 @@ steps:
       REACT_APP_SCOPE:
         from_secret: dev_scope
     commands:
+      - export CI=false
       - npm run build:dev
     when:
       branch:
