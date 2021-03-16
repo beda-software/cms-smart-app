@@ -22,6 +22,8 @@ steps:
     commands:
       - export CI=false
       - npm ci
+    depends_on:
+      - restore-cache
     when:
       branch:
         - master
