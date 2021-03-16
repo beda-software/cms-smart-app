@@ -9,7 +9,7 @@ when:
     - push
 
 steps:
-  - name: build-smart-app
+  - name: install-dependcy
     image: node:14.16.0-stretch
     commands:
       - export CI=false
@@ -18,8 +18,8 @@ steps:
       branch:
         - master
 
-  - name: push-smart-app-sandbox
-    image: plugins/docker
+  - name: build-smart-app-sandbox
+    image: node:14.16.0-stretch
     environment:
       REACT_APP_FHIR_SERVER:
         from_secret: sandbox_url
@@ -29,6 +29,35 @@ steps:
         from_secret: sandbox_smart
       REACT_APP_SCOPE:
         from_secret: sandbox_scope
+    commands:
+        - npm run build:sandbox
+    when:
+      branch:
+        - master
+    depends_on:
+      - install-dependcy
+
+  - name: build-smart-app-dev
+    image: node:14.16.0-stretch
+    environment:
+      REACT_APP_FHIR_SERVER:
+        from_secret: dev_url
+      REACT_APP_CLIENT_LOGIN:
+        from_secret: dev_login
+      REACT_APP_CLIENT_SMART:
+        from_secret: dev_smart
+      REACT_APP_SCOPE:
+        from_secret: dev_scope
+    commands:
+      - npm run build:dev
+    when:
+      branch:
+        - master
+    depends_on:
+      - install-dependcy
+
+  - name: push-smart-app-sandbox
+    image: banzaicloud/drone-kaniko
     settings:
       username:
         from_secret: docker_username
@@ -38,47 +67,32 @@ steps:
       repo: eu.gcr.io/villagecare/sof-sandbox
       context: .
       dockerfile: Dockerfile
-      build_args_from_env:
-        - REACT_APP_FHIR_SERVER
-        - REACT_APP_CLIENT_LOGIN
-        - REACT_APP_CLIENT_SMART
-        - REACT_APP_SCOPE
+      build_args:
+        - DIST_PATH=dist-s
     when:
       branch:
         - master
     depends_on:
-      - build-smart-app
+      - build-smart-app-sandbox
 
-#  - name: push-smart-app-dev
-#    image: plugins/docker
-#    environment:
-#      REACT_APP_FHIR_SERVER:
-#        from_secret: dev_url
-#      REACT_APP_CLIENT_LOGIN:
-#        from_secret: dev_login
-#      REACT_APP_CLIENT_SMART:
-#        from_secret: dev_smart
-#      REACT_APP_SCOPE:
-#        from_secret: dev_scope
-#    settings:
-#      username:
-#        from_secret: docker_username
-#      password:
-#        from_secret: docker_password
-#      registry: eu.gcr.io
-#      repo: eu.gcr.io/villagecare/sof-dev
-#      context: .
-#      dockerfile: Dockerfile
-#      build_args_from_env:
-#        - REACT_APP_FHIR_SERVER
-#        - REACT_APP_CLIENT_LOGIN
-#        - REACT_APP_CLIENT_SMART
-#        - REACT_APP_SCOPE
-#    when:
-#      branch:
-#        - master
-#    depends_on:
-#      - push-smart-app-sandbox
+  - name: push-smart-app-dev
+    image: banzaicloud/drone-kaniko
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      registry: eu.gcr.io
+      repo: eu.gcr.io/villagecare/sof-dev
+      context: .
+      dockerfile: Dockerfile
+      build_args:
+        - DIST_PATH=dist-d
+    when:
+      branch:
+        - master
+    depends_on:
+      - build-smart-app-dev
 
   - name: reload all sof
     image: claranet/gcloud-kubectl-docker
@@ -89,9 +103,10 @@ steps:
       - echo $cluster_service_account > creds.json
       - gcloud auth activate-service-account --key-file creds.json
       - gcloud container clusters get-credentials villagecare --zone us-central1-c --project villagecare
-#      - kubectl -n dev rollout restart deployment dev-sof-dev
+      - kubectl -n dev rollout restart deployment dev-sof-dev
       - kubectl -n dev rollout restart deployment dev-sof-sandbox
     depends_on:
+      - push-smart-app-dev
       - push-smart-app-sandbox
     when:
       branch:
