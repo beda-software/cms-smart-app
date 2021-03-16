@@ -41,6 +41,8 @@ steps:
         - node_modules
       when:
         event: push
+    depends_on:
+      - install-dependcy
 
   - name: build-smart-app-sandbox
     image: node:14.16.0-stretch
