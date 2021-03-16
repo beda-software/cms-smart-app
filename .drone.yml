@@ -54,7 +54,7 @@ steps:
       branch:
         - master
     depends_on:
-      - install-dependcy
+      - build-smart-app-sandbox
 
   - name: push-smart-app-sandbox
     image: banzaicloud/drone-kaniko
