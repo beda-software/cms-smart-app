@@ -1,8 +1,9 @@
 import React from "react";
+import { Button, Menu, Image } from "semantic-ui-react";
 import classes from "./index.module.css";
 import { getReadableNameFromUser } from "../../lib/fhirHelpers";
-import Button from "../Button";
 import { resetAuth, smartLaunchFx } from "../../stores/auth";
+import logo from "../../hslogo.png";
 
 const Header = (props: any) => {
   const { user } = props;
@@ -10,28 +11,29 @@ const Header = (props: any) => {
 
   return (
     <header className={classes.root}>
-      <div className={classes.left}>
-        {user?.photo && (
-          <img src={user.photo} className={classes.avatar} alt="" />
-        )}
-        <span>{getReadableNameFromUser(user.name)}</span>
-      </div>
-      <div>
-        <Button
-          title="Load patient"
-          onClick={() => smartLaunchFx(link.link.id)}
-        />
-      </div>
-      <div>
-        <Button
-          title="Logout"
-          type="outline"
-          onClick={() => {
-            sessionStorage.clear();
-            resetAuth();
-          }}
-        />
-      </div>
+      <Menu secondary>
+        <Menu.Menu position="left">
+          <Menu.Item>
+            <img src={logo} alt="" />
+          </Menu.Item>
+        </Menu.Menu>
+        <Menu.Menu position="right">
+          <Menu.Item>
+            <span>{getReadableNameFromUser(user.name)}</span>
+          </Menu.Item>
+          <Menu.Item>
+            <Button
+              basic
+              color="black"
+              content="Logout"
+              onClick={() => {
+                sessionStorage.clear();
+                resetAuth();
+              }}
+            />
+          </Menu.Item>
+        </Menu.Menu>
+      </Menu>
     </header>
   );
 };

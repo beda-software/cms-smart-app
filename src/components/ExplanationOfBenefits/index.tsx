@@ -1,5 +1,12 @@
 import React from "react";
-import { Icon, Accordion, Header, List, Segment } from "semantic-ui-react";
+import {
+  Icon,
+  Accordion,
+  Header,
+  List,
+  Segment,
+  Table,
+} from "semantic-ui-react";
 import classes from "./index.module.css";
 
 const ExplanationOfBenefit: React.FC<{
@@ -7,8 +14,30 @@ const ExplanationOfBenefit: React.FC<{
 }> = ({ items }) => {
   const [selectedEOB, setSelectedEOB] = React.useState<any | null>(null);
   return (
-    <Segment>
+    <>
       <Header as="h2">Explanations Of Benefit</Header>
+      <Table unstackable>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Billable period</Table.HeaderCell>
+            <Table.HeaderCell>Type</Table.HeaderCell>
+            <Table.HeaderCell>Provider</Table.HeaderCell>
+            <Table.HeaderCell>Issuer</Table.HeaderCell>
+            <Table.HeaderCell textAlign="right">Status</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>John</Table.Cell>
+            <Table.Cell>Approved</Table.Cell>
+            <Table.Cell>Approved</Table.Cell>
+            <Table.Cell>Approved</Table.Cell>
+
+            <Table.Cell textAlign="right">None</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
       <List relaxed>
         {items.map((eob) => {
           const isSelected = eob === selectedEOB;
@@ -84,7 +113,7 @@ const ExplanationOfBenefit: React.FC<{
           );
         })}
       </List>
-    </Segment>
+    </>
   );
 };
 

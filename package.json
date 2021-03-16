@@ -5,6 +5,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "clsx": "^1.1.1",
+    "date-fns": "^2.19.0",
     "effector": "^21.8.6",
     "effector-react": "^21.2.1",
     "effector-storage": "^4.1.1",
