@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { Grid } from "semantic-ui-react";
 import ExplanationOfBenefits from "./ExplanationOfBenefits";
 
 import { usePatient } from "../context/PatientProvider";
@@ -21,10 +22,14 @@ const getResourceByType = (
 const PatientRecord: FC<PatientRecordProps> = ({ resources }) => {
   const patient = usePatient();
   return (
-    <div>
-      <PatientBadge patient={patient} />
-      <ExplanationOfBenefits items={explanationOfBenefits} />
-    </div>
+    <Grid container stretched doubling columns={2} stackable>
+      <Grid.Column largeScreen={5} mobile={16}>
+        <PatientBadge patient={patient} />
+      </Grid.Column>
+      <Grid.Column largeScreen={11} mobile={16}>
+        <ExplanationOfBenefits items={explanationOfBenefits} />
+      </Grid.Column>
+    </Grid>
   );
 };
 

@@ -1,5 +1,6 @@
 import React from "react";
-import { Grid, Header, Segment } from "semantic-ui-react";
+import { Card, Grid, Header, Segment, Image } from "semantic-ui-react";
+import { differenceInYears } from "date-fns";
 import { obsValue } from "../../lib/fhirHelpers";
 import classes from "./index.module.css";
 
@@ -60,76 +61,53 @@ const PatientBadge: React.FC<IPatientBadgeProps> = ({
   const weightObs = searchableObs.find(
     (o: any) => o.code.coding[0].display === "Body Weight"
   );
+  const ident = patient.identifier.map((i: any) => {
+    return {
+      key: i?.type?.coding?.[0]?.code,
+      value: i?.value,
+    };
+  });
 
   return (
-    <Segment>
-      <Header as="h2">Patient</Header>
-      <Grid columns={2}>
-        <Grid.Column>
-          <div className={classes.row}>
-            <div className={classes.label}>Name</div>
-            <div>
-              {patient?.name?.[0]?.family},{" "}
-              {patient?.name?.[0].given?.join(" ") || []}
-            </div>
-          </div>
-          <div className={classes.row}>
-            <div className={classes.label}>Gender</div>
-            <div>{patient?.gender}</div>
-          </div>
-          <div className={classes.row}>
-            <div className={classes.label}>Date of Birth</div>
-            <div>{patient?.birthDate}</div>
-          </div>
-          <div className={classes.row}>
-            <div className={classes.label}>Address</div>
-            <div>{patient?.address?.[0]?.line?.join(" ")}</div>
-          </div>
-          <div className={classes.row}>
-            <div className={classes.label}>City, State</div>
-            <div>
-              {patient?.address?.[0]?.city}, {patient?.address?.[0]?.state}
-            </div>
-          </div>
-          <div className={classes.row}>
-            <div className={classes.label}>Postal Code</div>
-            <div>{patient?.address?.[0]?.postalCode}</div>
-          </div>
-          {patient.deceasedDateTime && (
-            <div className={classes.row}>
-              <span className={classes.label}>Cause of Death</span>
-              <span>{causeOfDeathObs}</span>
-            </div>
-          )}
-        </Grid.Column>
-        <Grid.Column>
-          <div className={classes.row}>
-            <div className={classes.label}>Height</div>
-            <div>{obsValue(heightObs) || "unk."}</div>
-          </div>
-          <div className={classes.row}>
-            <div className={classes.label}>Weight</div>
-            <div>{obsValue(heightObs) || "unk."}</div>
-          </div>
-          <div className={classes.row}>
-            <div className={classes.label}>Race</div>
-            <div>{race || "unk."}</div>
-          </div>
-          <div className={classes.row}>
-            <div className={classes.label}>Ethnicity</div>
-            <div>{ethnicity || "unk."}</div>
-          </div>
-          <div className={classes.row}>
-            <div className={classes.label}>Language</div>
-            <div>{language || "unk."}</div>
-          </div>
-          <div className={classes.row}>
-            <div className={classes.label}>Blood Type</div>
-            <div>unk.</div>
-          </div>
-        </Grid.Column>
-      </Grid>
-    </Segment>
+    <>
+      <Card fluid>
+        <Image
+          src="https://react.semantic-ui.com/images/avatar/large/matthew.png"
+          wrapped
+          ui
+        />
+        <Card.Content>
+          <Card.Header>
+            {patient?.name?.[0]?.family},{" "}
+            {patient?.name?.[0].given?.join(" ") || []},
+            {` ${differenceInYears(
+              new Date(),
+              new Date(patient?.birthDate)
+            )} years`}
+          </Card.Header>
+          <Card.Meta>
+            <span className="date">{patient?.address?.[0]?.city}</span>
+          </Card.Meta>
+          <p style={{ marginTop: "1rem", marginBottom: 0 }}>
+            <b>Identifiers</b>
+          </p>
+          {ident.map((i: any) => (
+            <Card.Description>
+              <b>{i.key}</b> : {i.value}
+            </Card.Description>
+          ))}
+          <p style={{ marginTop: "1rem", marginBottom: 0 }}>
+            <b>Contacts</b>
+          </p>
+
+          {patient?.telecom.map((i: any) => (
+            <Card.Description>
+              <b>{i.system}</b> : {i.value}
+            </Card.Description>
+          ))}
+        </Card.Content>
+      </Card>
+    </>
   );
 };
 
