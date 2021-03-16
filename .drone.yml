@@ -85,7 +85,7 @@ steps:
 #      - build-smart-app-sandbox
 
   - name: push-smart-app-sandbox
-    image: plugins/drone-kaniko
+    image: banzaicloud/drone-kaniko
     settings:
       username:
         from_secret: docker_username
@@ -102,7 +102,7 @@ steps:
 #      - build-smart-app-sandbox
 
   - name: push-smart-app-dev
-    image: plugins/drone-kaniko
+    image: banzaicloud/drone-kaniko
     settings:
       username:
         from_secret: docker_username
