@@ -9,80 +9,80 @@ when:
     - push
 
 steps:
-#  - name: restore-cache
-#    image: homerovalle/drone-gcs-cache
-#    settings:
-#      pull: true
-#      bucket: villagecare-ci-sof-cache
-#      json_key:
-#        from_secret: storage_service_account
-#      restore: true
-#
-#  - name: install-dependcy
-#    image: node:14.16.0-stretch
-#    commands:
-#      - export CI=false
-#      - npm ci
-#    depends_on:
-#      - restore-cache
-#    when:
-#      branch:
-#        - master
-#
-#  - name: rebuild-cache
-#    image: homerovalle/drone-gcs-cache
-#    settings:
-#      pull: true
-#      bucket: villagecare-ci-sof-cache
-#      json_key:
-#        from_secret: storage_service_account
-#      rebuild: true
-#      mount:
-#        - node_modules
-#      when:
-#        event: push
-#    depends_on:
-#      - install-dependcy
-#
-#  - name: build-smart-app-sandbox
-#    image: node:14.16.0-stretch
-#    environment:
-#      REACT_APP_FHIR_SERVER:
-#        from_secret: sandbox_url
-#      REACT_APP_CLIENT_LOGIN:
-#        from_secret: sandbox_login
-#      REACT_APP_CLIENT_SMART:
-#        from_secret: sandbox_smart
-#      REACT_APP_SCOPE:
-#        from_secret: sandbox_scope
-#    commands:
-#      - export CI=false
-#      - npm run build:sandbox
-#    when:
-#      branch:
-#        - master
-#    depends_on:
-#      - install-dependcy
-#
-#  - name: build-smart-app-dev
-#    image: node:14.16.0-stretch
-#    environment:
-#      REACT_APP_FHIR_SERVER:
-#        from_secret: dev_url
-#      REACT_APP_CLIENT_LOGIN:
-#        from_secret: dev_login
-#      REACT_APP_CLIENT_SMART:
-#        from_secret: dev_smart
-#      REACT_APP_SCOPE:
-#        from_secret: dev_scope
-#    commands:
-#      - export CI=false
-#      - npm run build:dev
-#    when:
-#      branch:
-#        - master
-#    depends_on:
-#      - build-smart-app-sandbox
+  - name: restore-cache
+    image: homerovalle/drone-gcs-cache
+    settings:
+      pull: true
+      bucket: villagecare-ci-sof-cache
+      json_key:
+        from_secret: storage_service_account
+      restore: true
+
+  - name: install-dependcy
+    image: node:14.16.0-stretch
+    commands:
+      - export CI=false
+      - npm ci
+    depends_on:
+      - restore-cache
+    when:
+      branch:
+        - master
+
+  - name: rebuild-cache
+    image: homerovalle/drone-gcs-cache
+    settings:
+      pull: true
+      bucket: villagecare-ci-sof-cache
+      json_key:
+        from_secret: storage_service_account
+      rebuild: true
+      mount:
+        - node_modules
+      when:
+        event: push
+    depends_on:
+      - install-dependcy
+
+  - name: build-smart-app-sandbox
+    image: node:14.16.0-stretch
+    environment:
+      REACT_APP_FHIR_SERVER:
+        from_secret: sandbox_url
+      REACT_APP_CLIENT_LOGIN:
+        from_secret: sandbox_login
+      REACT_APP_CLIENT_SMART:
+        from_secret: sandbox_smart
+      REACT_APP_SCOPE:
+        from_secret: sandbox_scope
+    commands:
+      - export CI=false
+      - npm run build:sandbox
+    when:
+      branch:
+        - master
+    depends_on:
+      - install-dependcy
+
+  - name: build-smart-app-dev
+    image: node:14.16.0-stretch
+    environment:
+      REACT_APP_FHIR_SERVER:
+        from_secret: dev_url
+      REACT_APP_CLIENT_LOGIN:
+        from_secret: dev_login
+      REACT_APP_CLIENT_SMART:
+        from_secret: dev_smart
+      REACT_APP_SCOPE:
+        from_secret: dev_scope
+    commands:
+      - export CI=false
+      - npm run build:dev
+    when:
+      branch:
+        - master
+    depends_on:
+      - build-smart-app-sandbox
 
   - name: push-smart-app-sandbox
     image: plugins/docker
@@ -92,48 +92,47 @@ steps:
       password:
         from_secret: docker_password
       registry: eu.gcr.io
-      repo: villagecare/sof-sandbox
+      repo: eu.gcr.io/villagecare/sof-sandbox
       build_args:
         - DIST_PATH=dist-s
     when:
       branch:
         - master
-#    depends_on:
-#      - build-smart-app-sandbox
+    depends_on:
+      - build-smart-app-sandbox
 
   - name: push-smart-app-dev
-    image: banzaicloud/drone-kaniko
+    image: plugins/docker
     settings:
       username:
         from_secret: docker_username
       password:
         from_secret: docker_password
       registry: eu.gcr.io
-      repo: villagecare/sof-dev
-      tags: auto
+      repo: eu.gcr.io/villagecare/sof-dev
       build_args:
         - DIST_PATH=dist-d
     when:
       branch:
         - master
-#    depends_on:
-#      - build-smart-app-dev
+    depends_on:
+      - build-smart-app-dev
 
-#  - name: reload all sof
-#    image: claranet/gcloud-kubectl-docker
-#    environment:
-#      cluster_service_account:
-#        from_secret: cluster_service_account
-#    commands:
-#      - echo $cluster_service_account > creds.json
-#      - gcloud auth activate-service-account --key-file creds.json
-#      - gcloud container clusters get-credentials villagecare --zone us-central1-c --project villagecare
-#      - kubectl -n dev rollout restart deployment dev-sof-dev
-#      - kubectl -n dev rollout restart deployment dev-sof-sandbox
-#    depends_on:
-#      - push-smart-app-dev
-#      - push-smart-app-sandbox
-#    when:
-#      branch:
-#        - master
+  - name: reload all sof
+    image: claranet/gcloud-kubectl-docker
+    environment:
+      cluster_service_account:
+        from_secret: cluster_service_account
+    commands:
+      - echo $cluster_service_account > creds.json
+      - gcloud auth activate-service-account --key-file creds.json
+      - gcloud container clusters get-credentials villagecare --zone us-central1-c --project villagecare
+      - kubectl -n dev rollout restart deployment dev-sof-dev
+      - kubectl -n dev rollout restart deployment dev-sof-sandbox
+    depends_on:
+      - push-smart-app-dev
+      - push-smart-app-sandbox
+    when:
+      branch:
+        - master
 
