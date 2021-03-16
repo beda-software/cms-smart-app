@@ -5,7 +5,7 @@ WORKDIR /usr/share/nginx/html
 
 RUN rm -rf ./*
 
-COPY --from=builder $DIST_PATH .
+COPY $DIST_PATH .
 
 EXPOSE 80
 
