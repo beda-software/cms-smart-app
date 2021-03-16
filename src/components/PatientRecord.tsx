@@ -9,6 +9,8 @@ import { $client, $user, initSmartClientFx } from "../stores/auth";
 import Button from "./Button";
 import UserBadge from "./UserBadge";
 
+import env from "../env";
+
 const PatientRecord: FC = () => {
   const { client } = useStore($client);
   const { data: user } = useStore($user);
@@ -25,26 +27,60 @@ const PatientRecord: FC = () => {
 
   console.log(client);
 
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <body>
+        <div></div>
+        <script src="https://cdn.jsdelivr.net/npm/fhirclient@latest/build/fhir-client.min.js"></script>
+        <script>
+          var data = {
+            iss: '${env.FHIR_SERVER}',
+            clientId: '${env.CLIENT_SMART}',
+            scope: '${env.SCOPE}',
+            patientId: '${link.link.id}'
+          }
+
+          console.log("HELLO FROM IFRAME", window.location);
+
+
+          //FHIR.oauth2.authorize(data);
+        </script>
+      </body>
+    </html>`;
+
   return (
-    <Grid container>
-      <Grid.Column tablet={6} largeScreen={6} widescreen={6} mobile={16}>
-        {patient ? (
-          <PatientBadge patient={patient} />
-        ) : (
-          <UserBadge user={user} />
-        )}
-      </Grid.Column>
-      <Grid.Column tablet={10} largeScreen={10} widescreen={10} mobile={16}>
-        {!client ? (
-          <Button
-            title="Get data from server"
-            onClick={() => initSmartClientFx(link.link.id)}
-          />
-        ) : (
-          <ExplanationOfBenefits items={explanationOfBenefits} />
-        )}
-      </Grid.Column>
-    </Grid>
+    <>
+      <Grid container>
+        <Grid.Column tablet={6} largeScreen={6} widescreen={6} mobile={16}>
+          {patient ? (
+            <PatientBadge patient={patient} />
+          ) : (
+            <UserBadge user={user} />
+          )}
+        </Grid.Column>
+
+        <Grid.Column tablet={10} largeScreen={10} widescreen={10} mobile={16}>
+          {!client ? (
+            <Button
+              title="Get data from server"
+              onClick={() => initSmartClientFx(link.link.id)}
+            />
+          ) : (
+            <ExplanationOfBenefits items={explanationOfBenefits} />
+          )}
+        </Grid.Column>
+      </Grid>
+      <iframe
+        sandbox="allow-top-navigation allow-scripts allow-forms allow-popups"
+        width="500"
+        height="300"
+        srcDoc={html}
+        name="my-iframe"
+        id="my-iframe"
+        title="Iframe AUTH"
+      />
+    </>
   );
 };
 
