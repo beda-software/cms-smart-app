@@ -16,7 +16,13 @@ RUN npm run build
 
 ### STAGE 2: Production Environment ###
 FROM nginx:1.19.8-alpine
-COPY --from=builder /app/build /var/www
+
+WORKDIR /usr/share/nginx/html
+
+RUN rm -rf ./*
+
+COPY --from=builder /app/build .
 
 EXPOSE 80
+
 CMD ["nginx", "-g", "daemon off;"]
