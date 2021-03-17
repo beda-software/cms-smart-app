@@ -9,14 +9,14 @@ when:
     - push
 
 steps:
-  - name: restore-cache
-    image: homerovalle/drone-gcs-cache
-    settings:
-      pull: true
-      bucket: villagecare-ci-sof-cache
-      json_key:
-        from_secret: storage_service_account
-      restore: true
+#  - name: restore-cache
+#    image: homerovalle/drone-gcs-cache
+#    settings:
+#      pull: true
+#      bucket: villagecare-ci-sof-cache
+#      json_key:
+#        from_secret: storage_service_account
+#      restore: true
 
   - name: install-dependcy
     image: node:14.16.0-stretch
