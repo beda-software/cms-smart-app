@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import classes from "./index.module.css";
+import classes from "./Button.module.css";
 
 interface IButtonProps {
   disabled?: boolean;

@@ -1,6 +1,5 @@
 import React from "react";
 import { Card, Image } from "semantic-ui-react";
-import { differenceInYears } from "date-fns";
 import { getReadableNameFromUser } from "../../lib/fhirHelpers";
 
 interface IPatientBadgeProps {

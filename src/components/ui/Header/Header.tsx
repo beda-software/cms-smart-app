@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Menu, Container } from "semantic-ui-react";
-import classes from "./index.module.css";
-import { getReadableNameFromUser } from "../../lib/fhirHelpers";
-import { resetAuth } from "../../stores/auth";
-import logo from "../../hslogo.png";
+import classes from "./Header.module.css";
+import { getReadableNameFromUser } from "../../../lib/fhirHelpers";
+import { resetAuth } from "../../../stores/auth";
+import logo from "../../../hslogo.png";
 
 const Header = (props: any) => {
   const { user } = props;

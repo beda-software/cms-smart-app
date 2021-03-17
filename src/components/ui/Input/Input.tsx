@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import classes from "./index.module.css";
+import classes from "./Input.module.css";
 
 interface IInputProps extends React.HTMLProps<HTMLInputElement> {
   className?: any;

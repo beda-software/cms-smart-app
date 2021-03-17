@@ -5,7 +5,6 @@ import { format } from "date-fns";
 import {
   Accordion,
   Breadcrumb,
-  Button,
   Container,
   Divider,
   Icon,
@@ -29,6 +28,7 @@ const Total = ({ total }: { total: Array<any> }) => {
     </div>
   );
 };
+
 const Items = ({ items }: { items: Array<any> }) => {
   return (
     <div>
@@ -53,6 +53,7 @@ const Items = ({ items }: { items: Array<any> }) => {
     </div>
   );
 };
+
 const Infos = ({ infos }: { infos: Array<any> }) => {
   return (
     <div>

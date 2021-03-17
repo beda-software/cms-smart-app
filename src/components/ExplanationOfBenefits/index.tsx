@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Header, Table } from "semantic-ui-react";
 import { useStore } from "effector-react";
 import classes from "./index.module.css";
-import Button from "../Button";
+import { Button } from "../ui";
 import { $eob, fetchEobFx } from "../../stores/patient";
 import { $client } from "../../stores/auth";
 

@@ -1,0 +1,24 @@
+.default{
+    border-color: var(--defaultBgColor);
+    padding: .5rem .75rem;
+    background-color: var(--defaultBgColor);
+    color: white;
+    border-radius: var(--borderRadius);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button[disabled]{
+    cursor: not-allowed;
+    background-color: rgba(53,60,80,0.05);
+    border-color: rgba(53,60,80,0.1);
+    color: rgba(53,60,80,0.1);
+}
+.outline{
+    background-color: transparent;
+    color: var(--defaulColor)
+}
+.outline:hover{
+    background-color: var(--defaultBgColor);
+    color: white;
+}

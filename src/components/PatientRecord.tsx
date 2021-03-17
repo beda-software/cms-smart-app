@@ -3,11 +3,11 @@ import { Grid } from "semantic-ui-react";
 import { useStore } from "effector-react";
 import ExplanationOfBenefits from "./ExplanationOfBenefits";
 
-import PatientBadge from "./PatientBadge";
+import PatientBadge from "./PatientBadge/PatientBadge";
 import { $client, $user, initSmartClientFx } from "../stores/auth";
 import { $patient, fetchPatientFx } from "../stores/patient";
-import Button from "./Button";
-import UserBadge from "./UserBadge";
+import { Button } from "./ui";
+import UserBadge from "./UserBadge/UserBadge";
 
 const PatientRecord: FC = () => {
   const client = useStore($client);

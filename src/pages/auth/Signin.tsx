@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import TextInput from "../../components/Input";
+import { Input, Button } from "../../components/ui";
 import classes from "./auth.module.css";
-import Button from "../../components/Button";
+
 import { signInFx } from "../../stores/auth";
 
 interface IForm {
@@ -44,7 +44,7 @@ const SignIn: React.FC = () => {
         }}
       >
         <form className={classes.form}>
-          <TextInput
+          <Input
             value={form.username}
             name="username"
             onChange={handleChange}
@@ -52,7 +52,7 @@ const SignIn: React.FC = () => {
               if (error) setError(false);
             }}
           />
-          <TextInput
+          <Input
             value={form.password}
             name="password"
             onChange={handleChange}
