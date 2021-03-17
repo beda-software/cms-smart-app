@@ -21,7 +21,7 @@ steps:
   - name: install-dependcy
     image: node:14.16.0-stretch
     commands:
-#      - export CI=false
+      #      - export CI=false
       - npm i
     depends_on:
       - restore-cache
@@ -64,25 +64,25 @@ steps:
     depends_on:
       - install-dependcy
 
-#  - name: build-smart-app-dev
-#    image: node:14.16.0-stretch
-#    environment:
-#      REACT_APP_FHIR_SERVER:
-#        from_secret: dev_url
-#      REACT_APP_CLIENT_LOGIN:
-#        from_secret: dev_login
-#      REACT_APP_CLIENT_SMART:
-#        from_secret: dev_smart
-#      REACT_APP_SCOPE:
-#        from_secret: dev_scope
-#    commands:
-#      - export CI=false
-#      - npm run build:dev
-#    when:
-#      branch:
-#        - master
-#    depends_on:
-#      - build-smart-app-sandbox
+  #  - name: build-smart-app-dev
+  #    image: node:14.16.0-stretch
+  #    environment:
+  #      REACT_APP_FHIR_SERVER:
+  #        from_secret: dev_url
+  #      REACT_APP_CLIENT_LOGIN:
+  #        from_secret: dev_login
+  #      REACT_APP_CLIENT_SMART:
+  #        from_secret: dev_smart
+  #      REACT_APP_SCOPE:
+  #        from_secret: dev_scope
+  #    commands:
+  #      - export CI=false
+  #      - npm run build:dev
+  #    when:
+  #      branch:
+  #        - master
+  #    depends_on:
+  #      - build-smart-app-sandbox
 
   - name: push-smart-app-sandbox
     image: plugins/docker
@@ -101,22 +101,22 @@ steps:
     depends_on:
       - build-smart-app-sandbox
 
-#  - name: push-smart-app-dev
-#    image: plugins/docker
-#    settings:
-#      username:
-#        from_secret: docker_username
-#      password:
-#        from_secret: docker_password
-#      registry: eu.gcr.io
-#      repo: eu.gcr.io/villagecare/sof-dev
-#      build_args:
-#        - DIST_PATH=./dist-d
-#    when:
-#      branch:
-#        - master
-#    depends_on:
-#      - build-smart-app-dev
+  #  - name: push-smart-app-dev
+  #    image: plugins/docker
+  #    settings:
+  #      username:
+  #        from_secret: docker_username
+  #      password:
+  #        from_secret: docker_password
+  #      registry: eu.gcr.io
+  #      repo: eu.gcr.io/villagecare/sof-dev
+  #      build_args:
+  #        - DIST_PATH=./dist-d
+  #    when:
+  #      branch:
+  #        - master
+  #    depends_on:
+  #      - build-smart-app-dev
 
   - name: reload all sof
     image: claranet/gcloud-kubectl-docker
@@ -130,7 +130,7 @@ steps:
       - kubectl -n dev rollout restart deployment dev-sof-dev
       - kubectl -n dev rollout restart deployment dev-sof-sandbox
     depends_on:
-#      - push-smart-app-dev
+      #      - push-smart-app-dev
       - push-smart-app-sandbox
     when:
       branch:
