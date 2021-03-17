@@ -71,7 +71,10 @@ export const $user = createStore<WithLoading>({
 
 export const $client = authDomain
   .createStore<any>(null)
-  .on(readySmartClientFx.done, (_, data) => data.result)
+  .on(readySmartClientFx.done, (_, data) => {
+    console.log(data.result);
+    return data.result;
+  })
   .reset(resetAuth);
 
 export const $clientAuth = authDomain

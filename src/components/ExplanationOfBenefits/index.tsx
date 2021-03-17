@@ -18,6 +18,8 @@ const ExplanationOfBenefit: React.FC<{
     if (loading) fetchEobFx({ client, patient: patientId });
   }, [client, loading, patientId]);
 
+  console.log(items);
+
   return (
     <>
       <div className={classes.group}>
@@ -42,14 +44,14 @@ const ExplanationOfBenefit: React.FC<{
         </Table.Header>
 
         <Table.Body>
-          {!items.length && (
+          {!items?.length && (
             <Table.Row>
               <Table.Cell singleLine textAlign="center">
                 <b>You don&apos;t have records</b>
               </Table.Cell>
             </Table.Row>
           )}
-          {items.length > 0 &&
+          {items?.length > 0 &&
             items.map((item: any) => (
               <Table.Row
                 key={item.id}

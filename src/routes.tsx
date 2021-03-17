@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, PartialRouteObject } from "react-router";
 import { useStore } from "effector-react";
 import { $token } from "./stores/auth";
 import SignIn from "./pages/auth/Signin";
@@ -7,7 +7,7 @@ import EobDetail from "./pages/eob-detail";
 import PatientRecord from "./components/PatientRecord";
 import Layout from "./pages/layout";
 
-const Routes = (): any => {
+const Routes = (): PartialRouteObject[] => {
   const token = useStore($token);
   if (!token) {
     return [
@@ -19,28 +19,24 @@ const Routes = (): any => {
     ];
   }
 
-  if (token) {
-    return [
-      {
-        path: "/",
-        element: <Layout />,
-        children: [
-          {
-            path: "/",
-            element: <PatientRecord />,
-          },
-          {
-            path: "/eob/:id",
-            element: <EobDetail />,
-          },
-        ],
-      },
+  return [
+    {
+      path: "/",
+      element: <Layout />,
+      children: [
+        {
+          path: "/",
+          element: <PatientRecord />,
+        },
+        {
+          path: "/eob/:id",
+          element: <EobDetail />,
+        },
+      ],
+    },
 
-      { path: "*", element: <Navigate to="/" /> },
-    ];
-  }
-
-  return null;
+    { path: "*", element: <Navigate to="/" /> },
+  ];
 };
 
 export default Routes;

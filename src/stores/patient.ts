@@ -5,15 +5,14 @@ const patientDomain = createDomain("patient");
 
 export const fetchPatientFx = patientDomain.createEffect(
   async ({ client, patient }: { client: any; patient: string }) => {
-    return client.request(`/fhir/Patient/${patient}`);
+    console.log(client);
+    return client.request(`/Patient/${patient}`);
   }
 );
 
 export const fetchEobFx = patientDomain.createEffect(
   async ({ client, patient }: { client: any; patient: string }) => {
-    const response = await client.request(
-      `/fhir/ExplanationOfBenefit?patient=${patient}`
-    );
+    const response = await client.request(`/ExplanationOfBenefit`);
     return response.entry?.map((r: any) => r.resource);
   }
 );
