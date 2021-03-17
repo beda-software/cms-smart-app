@@ -7,6 +7,8 @@ RUN rm -rf ./*
 
 ARG DIST_PATH
 
+RUN echo $DIST_PATH
+
 COPY $DIST_PATH .
 
 EXPOSE 80
