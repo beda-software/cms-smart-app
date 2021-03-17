@@ -41,7 +41,7 @@ const PatientBadge: React.FC<IPatientBadgeProps> = ({ patient }) => {
             <b>Identifiers</b>
           </p>
           {ident.map((i: any) => (
-            <Card.Description>
+            <Card.Description key={i.key}>
               <b>{i.key}</b> : {i.value}
             </Card.Description>
           ))}
@@ -50,7 +50,7 @@ const PatientBadge: React.FC<IPatientBadgeProps> = ({ patient }) => {
           </p>
 
           {patient?.telecom.map((i: any) => (
-            <Card.Description>
+            <Card.Description key={i.value}>
               <b>{i.system}</b> : {i.value}
             </Card.Description>
           ))}

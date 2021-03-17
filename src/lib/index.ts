@@ -9,7 +9,7 @@ export const initSmartClient = (patientId: string): Promise<void | string> => {
     iss: env.FHIR_SERVER,
     clientId: env.CLIENT_SMART,
     scope: env.SCOPE,
-    patientId,
+    redirectUri: "./",
   });
 };
 

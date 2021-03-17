@@ -1,0 +1,13 @@
+.group{
+  padding: 0;
+}
+.key{
+ font-weight: bold;
+ text-transform: capitalize;
+}
+.value{
+
+}
+.subgroup{
+    padding-left: 1rem;
+}

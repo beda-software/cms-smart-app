@@ -3,7 +3,9 @@ import { Navigate } from "react-router-dom";
 import { useStore } from "effector-react";
 import { $token } from "./stores/auth";
 import SignIn from "./pages/auth/Signin";
-import IndexPage from "./pages";
+import EobDetail from "./pages/eob-detail";
+import PatientRecord from "./components/PatientRecord";
+import Layout from "./pages/layout";
 
 const Routes = (): any => {
   const token = useStore($token);
@@ -20,8 +22,19 @@ const Routes = (): any => {
     return [
       {
         path: "/",
-        element: <IndexPage />,
+        element: <Layout />,
+        children: [
+          {
+            path: "/",
+            element: <PatientRecord />,
+          },
+          {
+            path: "/eob/:id",
+            element: <EobDetail />,
+          },
+        ],
       },
+
       { path: "*", element: <Navigate to="/" /> },
     ];
   }
