@@ -21,7 +21,6 @@
     "semantic-ui-react": "^2.0.3"
   },
   "devDependencies": {
-    "chokidar": "^3.5.1",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
     "@types/fhir": "^3.0.2",
@@ -32,6 +31,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
+    "chokidar": "^3.5.1",
     "css-loader": "^4.3.0",
     "eslint": "^7.21.0",
     "eslint-config-airbnb": "^18.2.1",

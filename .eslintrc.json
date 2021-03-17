@@ -32,6 +32,6 @@
     "import/prefer-default-export": "off",
     "linebreak-style": "off",
     "no-debugger": "off",
-    "prettier/prettier": 1
+    "prettier/prettier": ["warn", { "endOfLine": "auto" }]
   }
 }
