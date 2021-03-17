@@ -4,13 +4,8 @@ import { useStore } from "effector-react";
 import ExplanationOfBenefits from "./ExplanationOfBenefits";
 
 import PatientBadge from "./PatientBadge";
-import {
-  $client,
-  $patient,
-  $user,
-  fetchPatientFx,
-  initSmartClientFx,
-} from "../stores/auth";
+import { $client, $user, initSmartClientFx } from "../stores/auth";
+import { $patient, fetchPatientFx } from "../stores/patient";
 import Button from "./Button";
 import UserBadge from "./UserBadge";
 

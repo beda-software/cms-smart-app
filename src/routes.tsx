@@ -18,6 +18,7 @@ const Routes = (): any => {
       { path: "*", element: <Navigate to="/" /> },
     ];
   }
+
   if (token) {
     return [
       {

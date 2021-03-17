@@ -4,7 +4,8 @@ import { Header, Table } from "semantic-ui-react";
 import { useStore } from "effector-react";
 import classes from "./index.module.css";
 import Button from "../Button";
-import { $client, $eob, fetchEobFx } from "../../stores/auth";
+import { $eob, fetchEobFx } from "../../stores/patient";
+import { $client } from "../../stores/auth";
 
 const ExplanationOfBenefit: React.FC<{
   patientId: string;

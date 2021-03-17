@@ -4,7 +4,7 @@ import FHIR from "fhirclient";
 import { ALL_RESOURCES_PATIENT_REFERENCE } from "./patient";
 import env from "../env";
 
-export const initSmartClient = (patientId: string): Promise<void | string> => {
+export const initSmartClient = (): Promise<void | string> => {
   return FHIR.oauth2.authorize({
     iss: env.FHIR_SERVER,
     clientId: env.CLIENT_SMART,
@@ -21,11 +21,7 @@ const MapperClass = mappers.SyntheaToV09;
 const mapperInstance = MapperClass ? new MapperClass() : null;
 
 const applyMapping = (bundle: any) => {
-  let bundl = bundle;
-  if (mapperInstance && bundl) {
-    bundl = mapperInstance.execute(bundl);
-  }
-  return bundl;
+  return mapperInstance && bundle ? mapperInstance.execute(bundle) : bundle;
 };
 
 function getEverything(client: Client) {
@@ -49,12 +45,7 @@ function getEverythingManually(client: Client, supportedResources: any) {
         flat: true,
         pageLimit: 0,
       })
-      // eslint-disable-next-line consistent-return
-      .then((result) => {
-        if (result.length > 0) {
-          return result;
-        }
-      })
+      .then((result) => (result.length > 0 ? result : null))
       .catch((error) => {
         console.log(`failed to fetch ${resource}`);
         console.error(error);

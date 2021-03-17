@@ -10,7 +10,7 @@ import {
   Divider,
   Icon,
 } from "semantic-ui-react";
-import { $eob } from "../stores/auth";
+import { $eob } from "../stores/patient";
 import classes from "./eob-detaill.module.css";
 
 const Total = ({ total }: { total: Array<any> }) => {
