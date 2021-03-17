@@ -14,21 +14,6 @@ spec:
             backend:
               serviceName: sof-sandbox
               servicePort: 80
-  tls:
-    - hosts:
-        - dev.sof.sandbox.villagecare.aidbox.io
-      secretName: sof-sandbox-tls
-
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/cluster-issuer: "letsencrypt"
-  name: sof-dev
-spec:
-  rules:
     - host: dev.sof.villagecare.aidbox.io
       http:
         paths:
@@ -38,5 +23,7 @@ spec:
               servicePort: 80
   tls:
     - hosts:
+        - dev.sof.sandbox.villagecare.aidbox.io
         - dev.sof.villagecare.aidbox.io
       secretName: sof-dev-tls
+

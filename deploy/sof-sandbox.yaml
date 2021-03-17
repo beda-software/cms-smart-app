@@ -4,11 +4,11 @@ kind: Service
 metadata:
   name: sof-sandbox
 spec:
+  selector:
+    appStage: sof-sandbox
   ports:
     - port: 80
-      protocol: TCP
       name: sof-sandbox-http
-      targetPort: 80
   type: NodePort
 
 ---
@@ -17,8 +17,14 @@ kind: Deployment
 metadata:
   name: sof-sandbox
 spec:
+  selector:
+    matchLabels:
+      appStage: sof-sandbox
   replicas: 1
   template:
+    metadata:
+      labels:
+        appStage: sof-sandbox
     spec:
       containers:
         - name: sof-sandbox

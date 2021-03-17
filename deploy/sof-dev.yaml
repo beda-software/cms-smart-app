@@ -4,11 +4,11 @@ kind: Service
 metadata:
   name: sof-dev
 spec:
+  selector:
+    appStage: sof-dev
   ports:
     - port: 80
-      protocol: TCP
       name: sof-dev-http
-      targetPort: 80
   type: NodePort
 
 ---
@@ -16,9 +16,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sof-dev
+
 spec:
+  selector:
+    matchLabels:
+      appStage: sof-dev
   replicas: 1
   template:
+    metadata:
+      labels:
+        appStage: sof-dev
     spec:
       containers:
         - name: sof-dev

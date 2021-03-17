@@ -5,8 +5,9 @@ namespace: dev
 namePrefix: dev-
 commonLabels:
   env: dev
+  app: sof
 
 resources:
-  - ./sof-dev.yaml
   - ./sof-sandbox.yaml
+  - ./sof-dev.yaml
   - ./ingress.yaml
