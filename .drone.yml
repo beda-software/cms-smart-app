@@ -86,14 +86,15 @@ steps:
 
   - name: push-smart-app-sandbox
     image: plugins/docker
+    enviroment:
+      - DIST_PATH=./dist-s
     settings:
       username:
         from_secret: docker_username
       password:
         from_secret: docker_password
       registry: eu.gcr.io
-      enviroment:
-        - DIST_PATH=./dist-s
+
       repo: eu.gcr.io/villagecare/sof-sandbox
       build_args_from_env:
         - DIST_PATH
