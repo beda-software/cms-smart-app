@@ -31,7 +31,6 @@
     "@types/react-router-dom": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
-    "chokidar": "^3.5.1",
     "css-loader": "^4.3.0",
     "eslint": "^7.21.0",
     "eslint-config-airbnb": "^18.2.1",
