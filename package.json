@@ -2,6 +2,7 @@
   "name": "cms-smart-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "clsx": "^1.1.1",
