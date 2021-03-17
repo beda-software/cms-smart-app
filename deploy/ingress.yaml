@@ -7,7 +7,7 @@ metadata:
   name: sof-sandbox
 spec:
   rules:
-    - host: dev.sof.sandbox.villagecare.aidbox.io
+    - host: sof.dev.sandbox.villagecare.aidbox.io
       http:
         paths:
           - path: /
@@ -23,7 +23,7 @@ spec:
               servicePort: 80
   tls:
     - hosts:
-        - dev.sof.sandbox.villagecare.aidbox.io
+        - sof.dev.sandbox.villagecare.aidbox.io
         - dev.sof.villagecare.aidbox.io
       secretName: sof-dev-tls
 

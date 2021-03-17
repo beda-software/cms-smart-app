@@ -5,6 +5,7 @@ import { ALL_RESOURCES_PATIENT_REFERENCE } from "./patient";
 import env from "../env";
 
 export const initSmartClient = (): Promise<void | string> => {
+  FHIR.oauth2.options = { replaceBrowserHistory: false };
   return FHIR.oauth2.authorize({
     iss: env.FHIR_SERVER,
     clientId: env.CLIENT_SMART,
