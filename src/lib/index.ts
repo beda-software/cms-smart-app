@@ -1,3 +1,4 @@
+import { fhirclient } from "fhirclient/lib/types";
 import { mappers } from "fhir-mapper";
 import Client from "fhirclient/lib/Client";
 import FHIR from "fhirclient";
@@ -37,7 +38,7 @@ function getEverything(client: Client) {
 function getEverythingManually(client: Client, supportedResources: any) {
   supportedResources.push("Patient:_id");
   const requests: any = [];
-  supportedResources.forEach((resource: any) => {
+  supportedResources.forEach((resource: string) => {
     const res = resource.split(":");
     const request = client
       .request(`${res[0]}?${res[1]}=${client.patient.id}`, {
@@ -69,8 +70,8 @@ function getEverythingManually(client: Client, supportedResources: any) {
  */
 function getEverythingRevInclude(
   client: Client,
-  supportedResources: any,
-  onError: any
+  supportedResources: string[],
+  onError: (client: Client, supportedResources: string[]) => void
 ) {
   const query = supportedResources.join("&_revinclude=");
   return client
@@ -97,9 +98,9 @@ function getPatientRecord(client: Client) {
   return client.request(`/metadata`).then((statement) => {
     return getEverything(client).then((bundle) => applyMapping(bundle));
 
-    const supportedResources: any = [];
-    let revIncludeResources: any = [];
-    statement.rest[0].resource.forEach((resource: any) => {
+    const supportedResources: string[] = [];
+    let revIncludeResources: string[] = [];
+    statement.rest[0].resource.forEach((resource: fhirclient.FHIR.Resource) => {
       if (resource.type === "Patient") {
         if (resource.searchRevInclude) {
           revIncludeResources = resource.searchRevInclude;

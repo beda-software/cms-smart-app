@@ -1,9 +1,11 @@
 /* eslint-disable */
 declare module "fhir-visualizers" {
-  import React, { Component } from "react";
+  import { Component } from "react";
+  import { fhirclient } from "fhirclient/lib/types";
+  import Patient = fhirclient.FHIR.Patient;
 
   type PatientVisualizerProps = {
-    patient: any;
+    patient: Patient;
   };
 
   type RowProps = {

@@ -1,9 +1,10 @@
 import React from "react";
 import { Card, Image } from "semantic-ui-react";
 import { getReadableNameFromUser } from "../../lib/fhirHelpers";
+import {IUser} from "../../lib/types";
 
 interface IPatientBadgeProps {
-  user: any;
+  user: IUser;
 }
 
 const UserBadge: React.FC<IPatientBadgeProps> = ({ user }) => {

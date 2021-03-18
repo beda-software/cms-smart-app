@@ -5,7 +5,7 @@ import classes from "./Button.module.css";
 interface IButtonProps {
   disabled?: boolean;
   title: string;
-  onClick?: any;
+  onClick?: React.EventHandler<any>;
   type?: "outline" | "filled";
 }
 

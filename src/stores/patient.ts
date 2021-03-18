@@ -1,17 +1,17 @@
+import { fhirclient } from "fhirclient/lib/types";
 import { createDomain, createStore } from "effector";
-import { WithLoading } from "./types";
+import { WithClient, WithLoading } from "../lib/types";
 
 const patientDomain = createDomain("patient");
 
 export const fetchPatientFx = patientDomain.createEffect(
-  async ({ client, patient }: { client: any; patient: string }) => {
-    console.log(client);
+  async ({ client, patient }: WithClient<{ patient: string }>) => {
     return client.request(`/Patient/${patient}`);
   }
 );
 
 export const fetchEobFx = patientDomain.createEffect(
-  async ({ client, patient }: { client: any; patient: string }) => {
+  async ({ client }: WithClient) => {
     const response = await client.request(`/ExplanationOfBenefit`);
     return response.entry?.map((r: any) => r.resource);
   }
@@ -25,7 +25,7 @@ export const $eob = createStore<WithLoading<any[]>>({ loading: true, data: [] })
     return { loading: false, data: data.result };
   });
 
-export const $patient = createStore<any>(null).on(
+export const $patient = createStore<fhirclient.FHIR.Patient | null>(null).on(
   fetchPatientFx.done,
   (_, data) => data.result
 );

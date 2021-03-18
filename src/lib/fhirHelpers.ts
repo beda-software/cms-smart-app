@@ -1,4 +1,4 @@
-const round = (num: any, digits: number) => {
+const round = (num: string, digits: number) => {
   return Number.parseFloat(num).toFixed(digits);
 };
 

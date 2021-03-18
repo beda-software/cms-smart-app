@@ -1,12 +1,12 @@
 import React from "react";
-import { Button, Menu, Container } from "semantic-ui-react";
+import {Button, Container, Menu} from "semantic-ui-react";
 import classes from "./Header.module.css";
-import { getReadableNameFromUser } from "../../../lib/fhirHelpers";
-import { resetAuth } from "../../../stores/auth";
+import {getReadableNameFromUser} from "../../../lib/fhirHelpers";
+import {resetAuth} from "../../../stores/auth";
 import logo from "../../../hslogo.png";
+import {IUser} from "../../../lib/types";
 
-const Header = (props: any) => {
-  const { user } = props;
+const Header: React.FC<{ user: IUser }> = ({ user }) => {
   return (
     <Container className={classes.root}>
       <Menu secondary>

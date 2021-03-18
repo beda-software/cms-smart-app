@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { fhirclient } from "fhirclient/lib/types";
 import { useNavigate } from "react-router-dom";
 import { Header, Table } from "semantic-ui-react";
 import { useStore } from "effector-react";
@@ -52,7 +53,7 @@ const ExplanationOfBenefit: React.FC<{
             </Table.Row>
           )}
           {items?.length > 0 &&
-            items.map((item: any) => (
+            items.map((item: fhirclient.FHIR.Resource) => (
               <Table.Row
                 key={item.id}
                 onClick={() => {

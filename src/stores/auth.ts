@@ -1,7 +1,8 @@
 import { createDomain, createEvent, createStore } from "effector";
 import { persist } from "effector-storage/local/fp";
+import Client from "fhirclient/lib/Client";
 import { initSmartClient, readySmartClient } from "../lib";
-import { WithLoading } from "./types";
+import { WithLoading } from "../lib/types";
 import env from "../env";
 
 interface ISingInProps {
@@ -70,7 +71,7 @@ export const $user = createStore<WithLoading>({
   .reset(resetAuth);
 
 export const $client = authDomain
-  .createStore<any>(null)
+  .createStore<Client | null>(null)
   .on(readySmartClientFx.done, (_, data) => {
     console.log(data.result);
     return data.result;
@@ -78,7 +79,7 @@ export const $client = authDomain
   .reset(resetAuth);
 
 export const $clientAuth = authDomain
-  .createStore<any>(true)
+  .createStore<boolean>(true)
   .on(initSmartClientFx.done, () => true)
   .thru(persist({ key: "aidbox.grant" }))
   .reset(resetAuth);

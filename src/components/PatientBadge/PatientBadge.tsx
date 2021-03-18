@@ -1,9 +1,10 @@
 import React from "react";
 import { Card, Image } from "semantic-ui-react";
 import { differenceInYears } from "date-fns";
+import { fhirclient } from "fhirclient/lib/types";
 
 interface IPatientBadgeProps {
-  patient: any;
+  patient: fhirclient.FHIR.Patient;
 }
 
 const PatientBadge: React.FC<IPatientBadgeProps> = ({ patient }) => {
