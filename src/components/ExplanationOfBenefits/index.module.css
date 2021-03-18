@@ -16,3 +16,9 @@
 .mb0{
   margin-bottom: 0!important;
 }
+.table-cell {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

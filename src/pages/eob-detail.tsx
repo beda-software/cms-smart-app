@@ -44,12 +44,9 @@ const Items = ({ items }: { items: Array<any> }) => {
             <span className={classes.key}>
               {t?.productOrService?.coding?.[0]?.display || "N/A"} -{" "}
             </span>
-            {t?.adjudication.map((a: any) => {
+            {t?.adjudication.map((a: any, index: number) => {
               return (
-                <div
-                  className={classes.subgroup}
-                  key={a.category.coding[0].code}
-                >
+                <div className={classes.subgroup} key={index}>
                   <span className={classes.key}>
                     {a?.category?.coding?.[0]?.code || "N/A"} -{" "}
                   </span>
@@ -100,13 +97,15 @@ const renderKeys = (key: string, eob: any) => {
     case "total":
       return (
         <>
-          <Total total={eob[key]} /> <Divider />
+          <Total total={eob[key]} />
+          <Divider />
         </>
       );
     case "item":
       return (
         <>
-          <Items items={eob[key]} /> <Divider />
+          <Items items={eob[key]} />
+          <Divider />
         </>
       );
     case "supportingInfo":
@@ -152,8 +151,8 @@ const renderKeys = (key: string, eob: any) => {
         <>
           <div className={classes.group}>
             <span className={classes.key}>Identifiers:</span>
-            {eob[key].map((item: any) => (
-              <div className={classes.subgroup}>
+            {eob[key].map((item: any, index: number) => (
+              <div key={index} className={classes.subgroup}>
                 <span className={classes.key}>
                   {item?.type?.coding?.[0]?.code} -
                 </span>
@@ -189,6 +188,32 @@ const renderKeys = (key: string, eob: any) => {
     case "resourceType":
     case "meta":
       return null;
+    case "prescription":
+      return (
+        <>
+          <div className={classes.group}>
+            <span className={classes.key}>Prescription: </span>
+            <span>{eob[key]?.reference || ""}</span>
+          </div>
+          <Divider />
+        </>
+      );
+    case "careTeam":
+      return (
+        <>
+          <div className={classes.group}>
+            {eob[key]?.map((item: any, index: number) => (
+              <div key={index}>
+                <span className={classes.key}>
+                  {item.role?.coding[0]?.display}:{" "}
+                </span>
+                <span>{item?.provider?.reference || ""}</span>
+              </div>
+            )) || "N/A"}
+          </div>
+          <Divider />
+        </>
+      );
     default:
       return (
         <>

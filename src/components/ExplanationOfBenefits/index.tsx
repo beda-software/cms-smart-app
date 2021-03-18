@@ -50,20 +50,30 @@ const ExplanationOfBenefit: React.FC<{
               </Table.Cell>
             </Table.Row>
           )}
+
           {items?.length > 0 &&
             items.map((item: fhirclient.FHIR.Resource) => (
               <Table.Row
                 key={item.id}
-                onClick={() => {
-                  navigate(`/eob/${item.id}`);
-                }}
+                onClick={() => navigate(`/eob/${item.id}`)}
               >
                 <Table.Cell>
-                  {item?.billablePeriod?.start} - {item?.billablePeriod?.end}
+                  <div>{item?.billablePeriod?.start}</div>
+                  <div>{item?.billablePeriod?.end}</div>
                 </Table.Cell>
                 <Table.Cell>{item?.type?.text}</Table.Cell>
-                <Table.Cell>{item?.provider?.display}</Table.Cell>
-                <Table.Cell>{item?.insurer?.display}</Table.Cell>
+                <Table.Cell
+                  className={classes["table-cell"]}
+                  title={item?.provider?.display}
+                >
+                  {item?.provider?.display}
+                </Table.Cell>
+                <Table.Cell
+                  className={classes["table-cell "]}
+                  title={item?.insurer?.display}
+                >
+                  {item?.insurer?.display}
+                </Table.Cell>
 
                 <Table.Cell textAlign="right">{item?.outcome}</Table.Cell>
               </Table.Row>
