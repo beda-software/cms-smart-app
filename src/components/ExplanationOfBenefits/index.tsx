@@ -19,8 +19,6 @@ const ExplanationOfBenefit: React.FC<{
     if (loading) fetchEobFx({ client, patient: patientId });
   }, [client, loading, patientId]);
 
-  console.log(items);
-
   return (
     <>
       <div className={classes.group}>

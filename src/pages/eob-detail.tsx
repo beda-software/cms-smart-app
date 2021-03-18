@@ -16,18 +16,20 @@ const Total = ({ total }: { total: Array<any> }) => {
   return (
     <div>
       <span className={classes.key}>Total:</span>
-      {total?.map((t: any, index: number) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <div className={classes.subgroup} key={index}>
-          <span className={classes.key}>
-            {" "}
-            {t?.category?.coding[0]?.display || "N/A"} -{" "}
-          </span>
-          <span>
-            {t?.amount?.value} {t?.amount?.currency}
-          </span>
-        </div>
-      ))}
+      {total?.map((t: any, index: number) => {
+        return (
+          // eslint-disable-next-line react/no-array-index-key
+          <div className={classes.subgroup} key={index}>
+            <span className={classes.key}>
+              {" "}
+              {t?.category?.coding[0]?.display || "N/A"} -{" "}
+            </span>
+            <span>
+              {t?.amount?.value} {t?.amount?.currency}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 };
@@ -36,23 +38,30 @@ const Items = ({ items }: { items: Array<any> }) => {
   return (
     <div>
       <span className={classes.key}>Total:</span>
-      {items?.map((t: any) => (
-        <div className={classes.subgroup}>
-          <span className={classes.key}>
-            {t?.productOrService?.coding?.[0]?.display || "N/A"} -{" "}
-          </span>
-          {t?.adjudication.map((a: any) => (
-            <div className={classes.subgroup}>
-              <span className={classes.key}>
-                {a?.category?.coding?.[0]?.code || "N/A"} -{" "}
-              </span>
-              <span>
-                {a?.amount?.value} {a?.amount?.currency}
-              </span>
-            </div>
-          ))}
-        </div>
-      ))}
+      {items?.map((t: any) => {
+        return (
+          <div className={classes.subgroup} key={t.sequence}>
+            <span className={classes.key}>
+              {t?.productOrService?.coding?.[0]?.display || "N/A"} -{" "}
+            </span>
+            {t?.adjudication.map((a: any) => {
+              return (
+                <div
+                  className={classes.subgroup}
+                  key={a.category.coding[0].code}
+                >
+                  <span className={classes.key}>
+                    {a?.category?.coding?.[0]?.code || "N/A"} -{" "}
+                  </span>
+                  <span>
+                    {a?.amount?.value} {a?.amount?.currency}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
     </div>
   );
 };
@@ -205,7 +214,6 @@ const EobDetail: FC = () => {
     fn: (items, [itemId]) =>
       items.data.find(({ id }: { id: string }) => id === itemId),
   });
-  console.log('eob', eob);
   const [current, setCurrent] = useState<number>(-1);
 
   const handleClick = (e: any, titleProps: any) => {
@@ -236,7 +244,7 @@ const EobDetail: FC = () => {
       </Accordion>
       <Divider />
       {Object.keys(eob).map((key: string) => {
-        return renderKeys(key, eob);
+        return <div key={key}>{renderKeys(key, eob)}</div>;
       })}
     </Container>
   );
