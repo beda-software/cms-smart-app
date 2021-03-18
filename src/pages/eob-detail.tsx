@@ -19,7 +19,10 @@ const Total = ({ total }: { total: Array<any> }) => {
       {total?.map((t: any, index: number) => (
         // eslint-disable-next-line react/no-array-index-key
         <div className={classes.subgroup} key={index}>
-          <span className={classes.key}> {t?.category?.text || "N/A"} - </span>
+          <span className={classes.key}>
+            {" "}
+            {t?.category?.coding[0]?.display || "N/A"} -{" "}
+          </span>
           <span>
             {t?.amount?.value} {t?.amount?.currency}
           </span>
@@ -66,7 +69,7 @@ const Infos = ({ infos }: { infos: Array<any> }) => {
           <span>
             {["refillnum", "dayssupply"].includes(
               t?.category?.coding?.[0]?.code
-            ) && t.valueQuantity.value}
+            ) && t.valueQuantity?.value}
             {[
               "dawcode",
               "billingnetworkcontractingstatus",
@@ -145,7 +148,7 @@ const renderKeys = (key: string, eob: any) => {
                 <span className={classes.key}>
                   {item?.type?.coding?.[0]?.code} -
                 </span>
-                <span> {item.value}</span>
+                <span> {item?.value}</span>
               </div>
             ))}
           </div>
@@ -202,6 +205,7 @@ const EobDetail: FC = () => {
     fn: (items, [itemId]) =>
       items.data.find(({ id }: { id: string }) => id === itemId),
   });
+  console.log('eob', eob);
   const [current, setCurrent] = useState<number>(-1);
 
   const handleClick = (e: any, titleProps: any) => {

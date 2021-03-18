@@ -11,7 +11,7 @@ const PatientBadge: React.FC<IPatientBadgeProps> = ({ patient }) => {
   if (!patient || !Object.keys(patient).length) {
     return null;
   }
-  const ident = patient.identifier.map((i: any) => {
+  const ident = patient.identifier?.map((i: any) => {
     return {
       key: i?.type?.coding?.[0]?.code,
       value: i?.value,
@@ -50,7 +50,7 @@ const PatientBadge: React.FC<IPatientBadgeProps> = ({ patient }) => {
             <b>Contacts</b>
           </p>
 
-          {patient?.telecom.map((i: any) => (
+          {patient?.telecom?.map((i: any) => (
             <Card.Description key={i.value}>
               <b>{i.system}</b> : {i.value}
             </Card.Description>

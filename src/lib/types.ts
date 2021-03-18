@@ -5,7 +5,7 @@ export interface WithLoading<D = any> {
   data: D;
 }
 
-export type WithClient<T = any> = { client: Client } & T;
+export type WithClient<T = any> = { client: Client | null } & T;
 
 export interface IUser {
   name: string;
