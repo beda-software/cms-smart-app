@@ -5,10 +5,8 @@ import { WithClient, WithLoading } from "../lib/types";
 const patientDomain = createDomain("patient");
 
 export const fetchPatientFx = patientDomain.createEffect(
-  async ({ client, user }: WithClient<{ user: string }>) => {
-    const res = await client?.request(`/Role?.user.id=${user}`);
-    const patientId = res?.entry?.[0].resource.links.patient.id;
-    return client?.request(`/fhir/Patient/${patientId}`);
+  async ({ client, user }: WithClient<{ user: any }>) => {
+    return client?.request(`/fhir/Patient/${user.patient.id}`);
   }
 );
 
@@ -21,15 +19,17 @@ export const fetchEobFx = patientDomain.createEffect(
   }
 );
 
+export const resetData = patientDomain.createEvent();
+
 export const $eob = createStore<WithLoading<any[]>>({ loading: true, data: [] })
   .on(fetchEobFx, () => {
     return { loading: true, data: [] };
   })
   .on(fetchEobFx.done, (_, data) => {
     return { loading: false, data: data.result };
-  });
+  })
+  .reset(resetData);
 
-export const $patient = createStore<fhirclient.FHIR.Patient | null>(null).on(
-  fetchPatientFx.done,
-  (_, data) => data.result
-);
+export const $patient = createStore<fhirclient.FHIR.Patient | null>(null)
+  .on(fetchPatientFx.done, (_, data) => data.result)
+  .reset(resetData);

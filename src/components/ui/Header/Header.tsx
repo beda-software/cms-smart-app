@@ -1,10 +1,11 @@
 import React from "react";
-import {Button, Container, Menu} from "semantic-ui-react";
+import { Button, Container, Menu } from "semantic-ui-react";
 import classes from "./Header.module.css";
-import {getReadableNameFromUser} from "../../../lib/fhirHelpers";
-import {resetAuth} from "../../../stores/auth";
+import { getReadableNameFromUser } from "../../../lib/fhirHelpers";
+import { resetAuth } from "../../../stores/auth";
 import logo from "../../../hslogo.png";
-import {IUser} from "../../../lib/types";
+import { IUser } from "../../../lib/types";
+import { resetData } from "../../../stores/patient";
 
 const Header: React.FC<{ user: IUser }> = ({ user }) => {
   return (
@@ -28,6 +29,7 @@ const Header: React.FC<{ user: IUser }> = ({ user }) => {
               content="Logout"
               onClick={() => {
                 sessionStorage.clear();
+                resetData();
                 resetAuth();
               }}
             />

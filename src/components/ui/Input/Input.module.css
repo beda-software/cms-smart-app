@@ -5,7 +5,6 @@
     border-radius: var(--borderRadius);
     margin: .25rem 0;
     border: 1px solid var(--defaultBorderColor);
-    font-weight: bold;
     color: var(--defaulColor);
 }
 .common:focus{
