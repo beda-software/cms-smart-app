@@ -11,8 +11,8 @@ interface IForm {
 
 const SignIn: React.FC = () => {
   const [form, setForm] = useState<IForm>({
-    username: "funyloony@gmail.com",
-    password: "12345",
+    username: "",
+    password: "",
   });
   const [error, setError] = useState<boolean>(false);
 
