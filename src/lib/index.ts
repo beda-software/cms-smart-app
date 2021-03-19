@@ -5,10 +5,10 @@ import FHIR from "fhirclient";
 import { ALL_RESOURCES_PATIENT_REFERENCE } from "./patient";
 import env from "../env";
 
-export const initSmartClient = (): Promise<void | string> => {
+export const initSmartClient = (clientId?: string): Promise<void | string> => {
   return FHIR.oauth2.authorize({
     iss: env.FHIR_SERVER,
-    clientId: env.CLIENT_SMART,
+    clientId: clientId || env.CLIENT_SMART,
     scope: env.SCOPE,
   });
 };

@@ -41,6 +41,6 @@ export const getReadableNameFromUser = (name: any, withComma = false) => {
     return name.formatted;
   }
   return withComma
-    ? `${name?.givenFamily}, ${name?.givenName}`
-    : ` ${name?.givenName} ${name?.givenFamily}`;
+    ? `${name?.familyName}, ${name?.givenName}`
+    : ` ${name?.givenName} ${name?.familyName}`;
 };

@@ -5,8 +5,10 @@ import { WithClient, WithLoading } from "../lib/types";
 const patientDomain = createDomain("patient");
 
 export const fetchPatientFx = patientDomain.createEffect(
-  async ({ client, patient }: WithClient<{ patient: string }>) => {
-    return client?.request(`/fhir/Patient/${patient}`);
+  async ({ client, user }: WithClient<{ user: string }>) => {
+    const res = await client?.request(`/Role?.user.id=${user}`);
+    const patientId = res?.entry?.[0].resource.links.patient.id;
+    return client?.request(`/fhir/Patient/${patientId}`);
   }
 );
 

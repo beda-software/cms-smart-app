@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { useStore } from "effector-react";
 import ExplanationOfBenefits from "./ExplanationOfBenefits";
@@ -6,24 +6,20 @@ import ExplanationOfBenefits from "./ExplanationOfBenefits";
 import PatientBadge from "./PatientBadge/PatientBadge";
 import { $client, $user, initSmartClientFx } from "../stores/auth";
 import { $patient, fetchPatientFx } from "../stores/patient";
-import { Button } from "./ui";
+import { Button, Input } from "./ui";
 import UserBadge from "./UserBadge/UserBadge";
 
 const PatientRecord: FC = () => {
   const client = useStore($client);
   const { data: user } = useStore($user);
+  const [clientId, setClientID] = useState("");
   const patient = useStore($patient);
-
-  const link = React.useMemo(
-    () => user?.link.find((l: any) => l.link.resourceType === "Patient"),
-    [user?.link]
-  );
 
   useEffect(() => {
     if (client) {
-      fetchPatientFx({ client, patient: link.link.id });
+      fetchPatientFx({ client, user: user.id });
     }
-  }, [client, link]);
+  }, [client, user.id]);
 
   return (
     <>
@@ -37,14 +33,23 @@ const PatientRecord: FC = () => {
         </Grid.Column>
 
         <Grid.Column tablet={10} largeScreen={10} widescreen={10} mobile={16}>
-          {!client ? (
-            <Button
-              title="Get data from server"
-              onClick={() => initSmartClientFx(link.link.id)}
-            />
-          ) : (
-            <ExplanationOfBenefits patientId={link.link.id} />
+          {!client && (
+            <div>
+              <span>ClientId - optional</span>
+              <Input
+                value={clientId}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  const { value } = e.target;
+                  setClientID(value);
+                }}
+              />
+              <Button
+                title="Get data from server"
+                onClick={() => initSmartClientFx(clientId)}
+              />
+            </div>
           )}
+          {patient?.id && <ExplanationOfBenefits patientId={patient.id} />}
         </Grid.Column>
       </Grid>
     </>

@@ -22,7 +22,7 @@ const PatientBadge: React.FC<IPatientBadgeProps> = ({ patient }) => {
     <>
       <Card fluid>
         <Image
-          style={{ width: "100%", height: "400px" }}
+          style={{ width: "100%", maxHeight: "400px" }}
           src="https://react.semantic-ui.com/images/avatar/large/matthew.png"
           wrapped
           ui
