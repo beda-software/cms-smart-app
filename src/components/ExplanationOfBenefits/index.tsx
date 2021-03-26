@@ -22,9 +22,7 @@ const ExplanationOfBenefit: React.FC<{
   return (
     <>
       <div className={classes.group}>
-        <Header as="h2" className={classes.mb0}>
-          Explanations Of Benefit
-        </Header>
+        <Header as="h2">Claims</Header>
         <Button
           title={loading ? "Loading..." : "Reload"}
           onClick={() => fetchEobFx({ client, patient: patientId })}

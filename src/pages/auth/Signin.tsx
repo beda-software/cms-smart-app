@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Input, Button } from "../../components/ui";
 import classes from "./auth.module.css";
-
+import logo from "../../hslogo.png";
 import { signInFx } from "../../stores/auth";
 
 interface IForm {
@@ -23,9 +23,6 @@ const SignIn: React.FC = () => {
     });
   };
 
-  const isSubmitEnabled = Object.values(form).some((x: string) => {
-    return x.trim() === "";
-  });
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     signInFx(form).catch(() => {
@@ -44,9 +41,16 @@ const SignIn: React.FC = () => {
         }}
       >
         <form className={classes.form}>
+          <img
+            src={logo}
+            alt="logo"
+            width={200}
+            style={{ marginBottom: "2rem", alignSelf: "center" }}
+          />
           <Input
             value={form.username}
             name="username"
+            placeholder="Email"
             onChange={handleChange}
             onFocus={() => {
               if (error) setError(false);
@@ -56,19 +60,25 @@ const SignIn: React.FC = () => {
             value={form.password}
             name="password"
             onChange={handleChange}
+            placeholder="Password"
             type="password"
             onFocus={() => {
               if (error) setError(false);
             }}
           />
-          {error && (
+          {error ? (
             <div
               style={{ margin: ".5rem 0", color: "red", fontWeight: "bold" }}
             >
               Wrong credentials!
             </div>
+          ) : (
+            <div
+              style={{ margin: ".5rem 0", color: "red", fontWeight: "bold" }}
+            />
           )}
-          <Button title="Sign in" onClick={submit} disabled={isSubmitEnabled} />
+
+          <Button title="Sign in" onClick={submit} />
         </form>
       </main>
       <footer />

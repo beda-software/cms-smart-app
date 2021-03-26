@@ -50,6 +50,7 @@ export const getUserDataFx = authDomain.createEffect(async (token: string) => {
 });
 
 export const resetAuth = createEvent();
+export const setClientFromStorage = authDomain.createEvent<any>();
 
 export const initSmartClientFx = authDomain.createEffect(initSmartClient);
 export const readySmartClientFx = authDomain.createEffect(readySmartClient);
@@ -73,22 +74,37 @@ export const $user = createStore<WithLoading>({
 export const $client = authDomain
   .createStore<Client | null>(null)
   .on(readySmartClientFx.done, (_, data) => {
-    console.log(data.result);
     return data.result;
+  })
+  .on(setClientFromStorage, (_, data) => {
+    return data;
   })
   .reset(resetAuth);
 
 export const $clientAuth = authDomain
-  .createStore<boolean>(true)
+  .createStore<boolean>(false)
   .on(initSmartClientFx.done, () => true)
   .thru(persist({ key: "aidbox.grant" }))
   .reset(resetAuth);
 
 $clientAuth.watch((state) => {
   if (!state) return null;
+  return true;
+  //
+  // const url = new URL(window.location.href);
+  // return url.searchParams.get("code") ? readySmartClientFx() : null;
+});
 
-  const url = new URL(window.location.href);
-  return url.searchParams.get("code") ? readySmartClientFx() : null;
+$user.watch((state) => {
+  if (!state.loading && state.data.patient) {
+    const smartKey = sessionStorage.getItem("SMART_KEY");
+    if (smartKey) {
+      const client = sessionStorage.getItem(smartKey.replaceAll('"', ""));
+      if (client) {
+        readySmartClientFx();
+      }
+    }
+  }
 });
 
 $token.watch((state) => (state ? getUserDataFx(state) : null));
