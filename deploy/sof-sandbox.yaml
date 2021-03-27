@@ -28,7 +28,16 @@ spec:
     spec:
       containers:
         - name: sof-sandbox
-          image: "eu.gcr.io/villagecare/sof-sandbox"
+          image: "eu.gcr.io/villagecare/sof"
           imagePullPolicy: Always
+          env:
+            - name: URL
+              value: 'https://dev.sandbox.villagecare.aidbox.io'
+            - name: SCOPE
+              value: "launch/patient openid profile patient/*.read offline_access"
+            - name: LOGIN
+              value: "smart-login"
+            - name: CLIENT
+              value: "sof-app"
           ports:
             - containerPort: 80

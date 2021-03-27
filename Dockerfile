@@ -3,17 +3,17 @@ FROM nginx:1.19.8-alpine
 
 WORKDIR /usr/share/nginx/html
 
+RUN apk add --no-cache jq
 RUN rm -rf ./*
 
-ARG DIST_PATH
-
-RUN echo $DIST_PATH
-
-COPY $DIST_PATH .
+COPY ./build .
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/nginx.conf /etc/nginx/conf.d
 
+COPY docker-entrypoint.sh generate_config_js.sh /
+RUN chmod +x docker-entrypoint.sh generate_config_js.sh
+
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/docker-entrypoint.sh"]

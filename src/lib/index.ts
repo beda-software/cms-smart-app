@@ -7,8 +7,8 @@ import env from "../env";
 
 export const initSmartClient = (clientId?: string): Promise<void | string> => {
   return FHIR.oauth2.authorize({
-    iss: env.FHIR_SERVER,
-    clientId: clientId || env.CLIENT_SMART,
+    iss: env.URL,
+    clientId: clientId || env.CLIENT,
     scope: env.SCOPE,
   });
 };
