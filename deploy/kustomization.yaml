@@ -9,5 +9,4 @@ commonLabels:
 
 resources:
   - ./sof-sandbox.yaml
-  - ./sof-stage.yaml
   - ./ingress.yaml

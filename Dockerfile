@@ -1,12 +1,10 @@
 ### STAGE 2: Production Environment ###
 FROM nginx:1.19.8-alpine
 
-WORKDIR /usr/share/nginx/html
-
 RUN apk add --no-cache jq
 RUN rm -rf ./*
 
-COPY ./build .
+COPY ./build /usr/share/nginx/html
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/nginx.conf /etc/nginx/conf.d
