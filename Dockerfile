@@ -1,7 +1,7 @@
 ### STAGE 2: Production Environment ###
 FROM nginx:1.19.8
 
-RUN apk add --no-cache jq
+RUN apt update  && apt install -y jq
 RUN rm -rf /etc/nginx/conf.d
 
 COPY ./build /usr/share/nginx/html
