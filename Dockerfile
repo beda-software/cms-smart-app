@@ -1,5 +1,5 @@
 ### STAGE 2: Production Environment ###
-FROM nginx:1.19.8-alpine
+FROM nginx:1.19.8
 
 RUN apk add --no-cache jq
 RUN rm -rf /etc/nginx/conf.d
