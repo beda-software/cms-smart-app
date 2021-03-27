@@ -1,19 +1,16 @@
 ### STAGE 2: Production Environment ###
-FROM nginx:1.19.8-alpine
+FROM nginx:1.19.8
 
-WORKDIR /usr/share/nginx/html
+RUN apt update  && apt install -y jq
+RUN rm -rf /etc/nginx/conf.d
 
-RUN rm -rf ./*
+COPY ./build /usr/share/nginx/html
 
-ARG DIST_PATH
-
-RUN echo $DIST_PATH
-
-COPY $DIST_PATH .
-
-RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/nginx.conf /etc/nginx/conf.d
+
+COPY docker-entrypoint.sh generate_config_js.sh /
+RUN chmod +x docker-entrypoint.sh generate_config_js.sh
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/docker-entrypoint.sh"]

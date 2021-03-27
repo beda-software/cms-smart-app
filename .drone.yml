@@ -44,47 +44,18 @@ steps:
     depends_on:
       - install-dependcy
 
-  - name: build-smart-app-sandbox
+  - name: build-smart-app
     image: node:14.16.0-stretch
-    environment:
-      REACT_APP_FHIR_SERVER:
-        from_secret: sandbox_url
-      REACT_APP_CLIENT_LOGIN:
-        from_secret: sandbox_login
-      REACT_APP_CLIENT_SMART:
-        from_secret: sandbox_smart
-      REACT_APP_SCOPE:
-        from_secret: sandbox_scope
     commands:
       - export CI=false
-      - npm run build:sandbox
+      - npm run build
     when:
       branch:
         - master
     depends_on:
       - install-dependcy
 
-  - name: build-smart-app-stage
-    image: node:14.16.0-stretch
-    environment:
-      REACT_APP_FHIR_SERVER:
-        from_secret: stage_url
-      REACT_APP_CLIENT_LOGIN:
-        from_secret: stage_login
-      REACT_APP_CLIENT_SMART:
-        from_secret: stage_smart
-      REACT_APP_SCOPE:
-        from_secret: stage_scope
-    commands:
-      - export CI=false
-      - npm run build:stage
-    when:
-      branch:
-        - master
-    depends_on:
-      - build-smart-app-sandbox
-
-  - name: push-smart-app-sandbox
+  - name: push-smart-app
     image: plugins/docker
     settings:
       username:
@@ -92,31 +63,12 @@ steps:
       password:
         from_secret: docker_password
       registry: eu.gcr.io
-      repo: eu.gcr.io/villagecare/sof-sandbox
-      build_args:
-        - DIST_PATH=./dist-s
+      repo: eu.gcr.io/villagecare/sof
     when:
       branch:
         - master
     depends_on:
-      - build-smart-app-sandbox
-
-  - name: push-smart-app-stage
-    image: plugins/docker
-    settings:
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-      registry: eu.gcr.io
-      repo: eu.gcr.io/villagecare/sof-stage
-      build_args:
-        - DIST_PATH=./dist-stage
-    when:
-      branch:
-        - master
-    depends_on:
-      - build-smart-app-stage
+      - build-smart-app
 
   - name: reload all sof
     image: claranet/gcloud-kubectl-docker
@@ -130,8 +82,7 @@ steps:
       - kubectl -n stage rollout restart deployment stage-sof-stage
       - kubectl -n dev rollout restart deployment dev-sof-sandbox
     depends_on:
-      - push-smart-app-stage
-      - push-smart-app-sandbox
+      - push-smart-app
     when:
       branch:
         - master

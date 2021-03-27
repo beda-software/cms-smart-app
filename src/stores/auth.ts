@@ -14,7 +14,7 @@ const authDomain = createDomain("auth");
 
 export const signInFx = authDomain.createEffect(
   async ({ username, password }: ISingInProps) => {
-    const response = await fetch(`${env.FHIR_SERVER}/auth/token`, {
+    const response = await fetch(`${env.URL}/auth/token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +23,7 @@ export const signInFx = authDomain.createEffect(
         grant_type: "password",
         username,
         password,
-        client_id: env.CLIENT_LOGIN,
+        client_id: env.LOGIN,
       }),
     });
     const json = await response.json();
@@ -35,7 +35,7 @@ export const signInFx = authDomain.createEffect(
 );
 
 export const getUserDataFx = authDomain.createEffect(async (token: string) => {
-  const response = await fetch(`${env.FHIR_SERVER}/auth/userinfo`, {
+  const response = await fetch(`${env.URL}/auth/userinfo`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

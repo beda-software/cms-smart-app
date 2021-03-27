@@ -49,9 +49,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build:dev": "react-scripts build && mv build dist-d",
-    "build:stage": "react-scripts build && mv build dist-stage",
-    "build:sandbox": "react-scripts build && mv build dist-s",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{ts,tsx}' --ignore-path .gitignore",
