@@ -6,7 +6,7 @@ const data: Record<string, string> = {
 };
 
 const stripTrailingSlash = (str: string) => {
-  return str.endsWith("/") ? str.slice(0, -1) : str;
+  return str?.endsWith("/") ? str.slice(0, -1) : str;
 };
 
 const env = (typeof process && process.env) || {};

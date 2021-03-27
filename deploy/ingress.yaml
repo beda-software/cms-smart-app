@@ -14,16 +14,7 @@ spec:
             backend:
               serviceName: sof-sandbox
               servicePort: 80
-    - host: dev.sof.villagecare.aidbox.io
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: sof-dev
-              servicePort: 80
   tls:
     - hosts:
         - sof.dev.sandbox.villagecare.aidbox.io
-        - dev.sof.villagecare.aidbox.io
       secretName: sof-dev-tls
-
