@@ -5,15 +5,15 @@ import { WithClient, WithLoading } from "../lib/types";
 const patientDomain = createDomain("patient");
 
 export const fetchPatientFx = patientDomain.createEffect(
-  async ({ client, user }: WithClient<{ user: any }>) => {
-    return client?.request(`/fhir/Patient/${user.patient.id}`);
+  async ({ client }: WithClient) => {
+    return client?.request(`/Patient/${client.patient.id}`);
   }
 );
 
 export const fetchEobFx = patientDomain.createEffect(
   async ({ client, patient }: WithClient<{ patient: string }>) => {
     const response = await client?.request(
-      `/fhir/ExplanationOfBenefit?patient=${patient}`
+      `/ExplanationOfBenefit?patient=${patient}`
     );
     return response.entry?.map((r: any) => r.resource);
   }

@@ -1,27 +1,15 @@
 import React from "react";
 import { Navigate, PartialRouteObject } from "react-router";
 import { useStore } from "effector-react";
-import { $token, $client } from "./stores/auth";
-import SignIn from "./pages/auth/Signin";
+import { $client } from "./stores/auth";
 import EobDetail from "./pages/eob-detail";
 import PatientRecord from "./components/PatientRecord";
 import Layout from "./pages/layout";
 
 const Routes = (): PartialRouteObject[] => {
-  const token = useStore($token);
   const client = useStore($client);
 
-  if (!token) {
-    return [
-      {
-        path: "/",
-        element: <SignIn />,
-      },
-      { path: "*", element: <Navigate to="/" /> },
-    ];
-  }
-
-  if (token && !client) {
+  if (!client) {
     return [
       {
         path: "/",
